@@ -1,68 +1,53 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center">
+Queixas de Condomínio
+  <!-- <br>
+   <img src="https://i.imgur.com/6ciMZ44.jpg" alt="My logo"/>
+  <br> -->
+</h1>
+<p align="center">   
+ <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-%5E16.13.1-brightgreen?style=plastic&logo=appveyor"></a>
+ <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/Typescript-%5E3.7.5-green?style=plastic&logo=appveyor"></a>
+ <a href="https://github.com/axios/axios"><img src="https://img.shields.io/badge/Axios-%5E0.19.2-orange?style=plastic&logo=appveyor"></a>
+ <a href="https://getbootstrap.com/"><img src="https://img.shields.io/badge/Bootstrap-%5E4.5.0-ff69b4?style=plastic&logo=appveyor"></a>
+ <a href="mailto:samueldcabral@gmail.com"><img src="https://img.shields.io/badge/Email-Me!-lightgrey?style=plastic&logo=appveyor"></a>
+ <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue?style=plastic&logo=appveyor"></a>
+</p>
 
-## Available Scripts
+<p align="center">
+  Este projeto foi criado com o intuito de fazer algo. <a href="https://api.nasa.gov/">Pode ser incluído um link útil</a> nesta <strong>descrição</strong>. Mais detalhes podem ser incluídos para também dar mais dimensão à descrição que vai ser lida mais. Quanto mais linhas tiver aqui, vai parecer que você até se esforçou mais, rs.
+</p>
 
-In the project directory, you can run:
+## Indíce
 
-### `npm start`
+- [Screenshots](#Screenshots)
+- [Instalação](#Instalação)
+- [Contribuições](#Contribuições)
+- [Licença](#Licença)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<h2 id="Screenshots">Screenshots</h2>
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+|                 Tela Inicial                 |
+| :------------------------------------------: |
+| <img src="" width="700" alt="splash screen"> |
 
-### `npm test`
+## Instalação
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Caso queira replicar este projeto, a instalação é simples.
 
-### `npm run build`
+```bash
+git clone https://github.com/samueldcabral/React-Typescript-Boilerplate-and-Readme.git
+cd React-Typescript-Boilerplate-and-Readme/
+npm install
+npm start
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Contribuições
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Você pode contribuir de várias formas, por exemplo criando novas 'features', retirando bugs, melhorando a documentação e
+exemplos, ou até traduzindo algum documento daqui para outra língua.
+You may contribute in several ways like creating new features, fixing bugs, improving documentation and examples
+or translating any document here to your language.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Licença
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+[MIT](https://opensource.org/licenses/MIT) - Samuel D Cabral - 2020
