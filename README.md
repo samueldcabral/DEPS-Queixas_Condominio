@@ -35,8 +35,8 @@ Queixas de Condomínio
 Caso queira replicar este projeto, a instalação é simples.
 
 ```bash
-git clone https://github.com/samueldcabral/React-Typescript-Boilerplate-and-Readme.git
-cd React-Typescript-Boilerplate-and-Readme/
+git clone https://github.com/samueldcabral/DEPS-Queixas_Condominio.git
+cd DEPS-Queixas_Condominio/
 npm install
 npm start
 ```
