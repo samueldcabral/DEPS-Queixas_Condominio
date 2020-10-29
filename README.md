@@ -41,6 +41,15 @@ npm install
 npm start
 ```
 
+## Não esqueça de verificar a documentação oficial dos pacotes:
+
+#### React Boostrap [Aqui](https://react-bootstrap.github.io/getting-started/introduction/)
+#### React Router Dom [Aqui](https://reactrouter.com/web/guides/quick-start)
+#### React Transition Group [Aqui](https://reactcommunity.org/react-transition-group/)
+#### React Icons [Aqui](https://react-icons.github.io/react-icons/)
+#### Axios [Aqui](https://github.com/axios/axios)
+<br/>
+
 ## Contribuições
 
 Você pode contribuir de várias formas, por exemplo criando novas 'features', retirando bugs, melhorando a documentação e
