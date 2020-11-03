@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./Home.css";
 
-import Container from "react-bootstrap/Container";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
@@ -10,7 +9,7 @@ import {useHistory} from "react-router-dom";
 import HousePng from "./../../assets/img/house.png"
 
 const Home = () => {
-  const [state, setState] = useState("");
+  // const [state, setState] = useState("");
   const history = useHistory();
 
   useEffect(() => {
