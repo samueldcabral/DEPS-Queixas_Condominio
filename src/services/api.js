@@ -15,7 +15,13 @@ export async function getApiQueixas() {
 }
 
 export async function createApiQueixas(queixa) {
-  return await api.post("queixas", {
+  return await api.post("/queixas", {
+    queixa,
+  });
+}
+
+export async function deleteApiQueixas(queixa) {
+  return await api.delete("/queixas/"+queixa.$oid, {
     queixa,
   });
 }

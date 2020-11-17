@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 
-import {getApiQueixas} from "../../services/api";
+import {getApiQueixas, deleteApiQueixas} from "../../services/api";
 import Queixa from "../../models/Queixa";
 
 import Container from "react-bootstrap/Container";
@@ -34,6 +34,12 @@ const Dashboard = () => {
     setQueixas(resultArr);
   }
 
+  const deleteQueixas = async (queixaID) => {
+    await deleteApiQueixas(queixaID);
+    
+    getQueixas();
+  }
+
   useEffect(() => {
 
     getQueixas();
@@ -41,8 +47,12 @@ const Dashboard = () => {
     return () => {};
   }, []);
 
+
+
+  
   return (
-    <Container>
+    <Container className="Container">
+      <div className="div">
       <h1 className="mt-5">Verifique aqui suas queixas recentes</h1>
       {/* {queixas && <p>{JSON.stringify(queixas, null, '\t')}</p>} */}
 
@@ -76,7 +86,9 @@ const Dashboard = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      </div>
 
+    <div className="div">
       <Table striped bordered hover className="mt-3">
         <thead>
           <tr>
@@ -87,11 +99,14 @@ const Dashboard = () => {
             <th>Gravidade</th>
             <th>Privado?</th>
             <th>Criado_em</th>
+            <th>Editar</th>
+            <th>Excluir</th>
           </tr>
         </thead>
         <tbody>
    
           {queixas && queixas.map((queixa,idx)=> {
+            console.log(queixa._id.value)
             return(
               <tr>
                 <td>{idx+1}</td>
@@ -101,13 +116,15 @@ const Dashboard = () => {
                 <td>{queixa.gravidade}</td>
                 <td>{queixa.privacidade ? "Sim" : "Não"}</td>
                 <td>{new Date(queixa.created_at).toUTCString()}</td>
+                <td><Button>Editar</Button></td>
+                <td><Button onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
               </tr>
             )
           })}
          
         </tbody>
       </Table>
-
+    </div>
 
     </Container>
   );
