@@ -4,6 +4,7 @@ import "./App.css";
 
 import Home from "./components/Home/Home";
 import Dashboard from "./components/Dashboard/Dashboard";
+import DashboardUser from "./components/DashboardUser/DashboardUser";
 import MyNavbar from "./components/MyNavbar/MyNavbar";
 
 import {QueixaContext} from "./store/store";
@@ -22,6 +23,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home}/>
           <Route path="/dashboard" exact component={Dashboard}/>
+          <Route path="/dashboardUser" exact component={DashboardUser}/>
         </Switch>
       </Router>
 
