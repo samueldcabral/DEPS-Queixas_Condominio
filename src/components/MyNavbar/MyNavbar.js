@@ -1,17 +1,18 @@
 import React, {  useContext, useEffect } from "react";
 import "./MyNavbar.css";
+
+import { useHistory } from "react-router-dom";
+
+import {QueixaContext} from "../../store/queixa";
+
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 
-import {QueixaContext} from "../../store/store";
-import { useHistory } from "react-router-dom";
-
 const MyNavbar = () => {
-  // const [state, setState] = useState("");
-  const {user} = useContext(QueixaContext);
+  const {state} = useContext(QueixaContext);
   const history = useHistory();
   
   useEffect(() => {
@@ -26,7 +27,7 @@ const MyNavbar = () => {
       <Nav.Link href="#features">Queixas</Nav.Link>
 
     </Nav>
-    {user ? <div>user is {user}</div> 
+    {state ? <div>user is {state.email}</div> 
     :
     <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />

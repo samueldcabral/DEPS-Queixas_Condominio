@@ -1,8 +1,8 @@
 <h1 align="center">
-Queixas de Condomínio
-  <!-- <br>
-   <img src="https://i.imgur.com/6ciMZ44.jpg" alt="My logo"/>
-  <br> -->
+<!-- Queixas de Condomínio -->
+  <br>
+   <img src="https://i.imgur.com/UESS7V4.png" alt="My logo"/>
+  <br>
 </h1>
 <p align="center">   
  <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-%5E16.13.1-brightgreen?style=plastic&logo=appveyor"></a>
@@ -28,7 +28,7 @@ Queixas de Condomínio
 
 |                 Tela Inicial                 |
 | :------------------------------------------: |
-| <img src="" width="700" alt="splash screen"> |
+| <img src="https://i.imgur.com/ipDmoZf.png" width="700" alt="splash screen"> |
 
 ## Instalação
 

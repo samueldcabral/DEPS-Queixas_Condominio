@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./VisualizarQueixa.css";
 
+import { getApiQueixa } from "../../services/api";
 import Container from "react-bootstrap/Container"
 import Card from "react-bootstrap/Card"
-
-import { getApiQueixa } from "../../services/api";
 import Queixa from "../../models/Queixa";
 import { useParams } from "react-router-dom"
 // import {useHistory} from "react-router-dom";
@@ -28,11 +27,11 @@ const VisualizarQueixa = () => {
       const { criado_por, created_at, descricao, gravidade, privacidade, status_id,
         tipo, titulo, updated_at, usuarios_ids, _id } = result.data;
 
-      const queixa = new Queixa(criado_por, created_at, descricao, gravidade, privacidade, status_id,
+      const queixaCriada = new Queixa(criado_por, created_at, descricao, gravidade, privacidade, status_id,
         tipo, titulo, updated_at, usuarios_ids, _id);
 
-      setQueixa(queixa);
-    } catch (error) {
+      setQueixa(queixaCriada);
+    } catch (erro) {
       setError("Algo deu errado");
     } finally {
       setLoading(false);

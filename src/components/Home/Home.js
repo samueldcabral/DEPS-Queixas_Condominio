@@ -1,31 +1,29 @@
 import React, { useEffect, useContext } from "react";
 import "./Home.css";
+import HousePng from "./../../assets/img/house.png"
+
+import {useHistory} from "react-router-dom";
 
 import { QueixaContext } from '../../store/queixa'
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import {useHistory} from "react-router-dom";
-
-import HousePng from "./../../assets/img/house.png"
-
 const Home = () => {
-  // const [state, setState] = useState("");
   const history = useHistory();
 
-  const [state, setState] = useContext(QueixaContext)
+  const {setUser} = useContext(QueixaContext)
 
   useEffect(() => {
-    setState(state => ({...state, nome: "José"}));
+    setUser(prevState => ({...prevState, nome: "José"}));
 
     return () => {};
-  }, [setState]);
+  }, [setUser]);
 
   const handleSubmit = (e) => {
     history.push("/Dashboard");
   }
-console.log(state);
+
   return (
       <div style={{display: "flex", flex: "100%", width:"60%", margin: "auto", height: "90vh"}}>
 
