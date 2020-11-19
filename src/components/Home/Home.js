@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import "./Home.css";
+
+import { QueixaContext } from '../../store/queixa'
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -12,14 +14,18 @@ const Home = () => {
   // const [state, setState] = useState("");
   const history = useHistory();
 
+  const [state, setState] = useContext(QueixaContext)
+
   useEffect(() => {
+    setState(state => ({...state, nome: "José"}));
+
     return () => {};
-  }, []);
+  }, [setState]);
 
   const handleSubmit = (e) => {
     history.push("/Dashboard");
   }
-
+console.log(state);
   return (
       <div style={{display: "flex", flex: "100%", width:"60%", margin: "auto", height: "90vh"}}>
 
