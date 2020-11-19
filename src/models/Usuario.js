@@ -18,9 +18,10 @@ export default class Usuario{
         nome,
         endereco,
         perfil_id,
-        queixa_ids = [],
+        queixa_ids,
         created_at,
-        updated_at,
+        updated_at
+
     ){
       this._id = _id;
       this.email = email;

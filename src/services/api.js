@@ -34,6 +34,12 @@ export async function getApiUsuarios() {
   return await api.get("/usuarios");
 }
 
+export async function createApiUsuarios(usuario) {
+  return await api.post("/sign_up", {
+    usuario,
+  });
+}
+
 export async function deleteApiUsuarios(usuario) {
   return await api.delete("/usuarios/"+usuario.$oid, {
     usuario,
