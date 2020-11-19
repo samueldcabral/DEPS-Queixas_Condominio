@@ -1,5 +1,6 @@
 export default class Queixa{
   _id = "";
+  criado_por = "";
   tipo = "";
   gravidade = "";
   titulo = [];
@@ -13,6 +14,7 @@ export default class Queixa{
   created_at = "";
 
   constructor(
+    criado_por,
     created_at,
     descricao,
     gravidade,
@@ -24,6 +26,7 @@ export default class Queixa{
     usuarios_ids,
     _id,
   ){
+    this.criado_por = criado_por;
     this._id = _id;
     this.created_at = created_at
     this.descricao = descricao

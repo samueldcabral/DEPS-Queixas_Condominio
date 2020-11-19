@@ -15,7 +15,9 @@ import Dropdown from "react-bootstrap/Dropdown"
 
 const Dashboard = () => {
   const [usuarios, setUsuarios] = useState([]);
-  const [show, setShow] = useState(false); //Modal state
+
+ //Modal state
+  const [show, setShow] = useState(false);
 
   //Model Usuário
   const [_id, setId] = useState("");
@@ -29,14 +31,13 @@ const Dashboard = () => {
   const [created_at, setCreated_at] = useState("");
   const [updated_at, setUpdated_at] = useState("");
 
+  //Erro password
+  const [errorPassword, setErrorPassword] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
 
   //Modal functions
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  //Form validation
-  //https://react-bootstrap.netlify.app/components/forms/?#forms-validation-native
-
 
   const getUsuarios = async () => {
     let result = await getApiUsuarios();
@@ -74,6 +75,20 @@ const Dashboard = () => {
     return () => {};
   }, []);
 
+  const validaDados = () => {
+    let status = false;
+    usuarios.map((usuario)=> {
+      if (usuario.email === email){
+        let status = true;
+        setErrorEmail("E-mail já cadastrado!")
+      }
+    })
+    if(password !== password_confirmation){
+      setErrorPassword("As senhas estão diferentes!")
+    }else if (password === password_confirmation && status == true){
+      createUsuarios()
+    }
+  }
 
   return (
     <Container className="Container">
@@ -102,6 +117,18 @@ const Dashboard = () => {
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>E-mail do usuário</Form.Label>
                 <Form.Control type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                {errorEmail && (
+                  <div style={{
+                    color: "rgb(168,104,109)",
+                    backgroun: "rgb(248,215,218)",
+                    boderRadius: "3px",
+                    padding: "2px 2px 2px 10px",
+                    fontSizr: "0.8rem",
+                    marginBottom: "0.5rem"
+                  }}>
+                    {errorEmail}
+                  </div>
+                )}
               </Form.Group>
 
               <Form.Group>
@@ -112,11 +139,35 @@ const Dashboard = () => {
               <Form.Group>
                 <Form.Label>Senha</Form.Label>
                 <Form.Control type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                {errorPassword && (
+                  <div style={{
+                    color: "rgb(168,104,109)",
+                    backgroun: "rgb(248,215,218)",
+                    boderRadius: "3px",
+                    padding: "2px 2px 2px 10px",
+                    fontSizr: "0.8rem",
+                    marginBottom: "0.5rem"
+                  }}>
+                    {errorPassword}
+                  </div>
+                )}
               </Form.Group>
 
               <Form.Group>
                 <Form.Label>Confirme a senha</Form.Label>
                 <Form.Control type="password" placeholder="Repita a senha" value={password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)}/>
+                {errorPassword && (
+                  <div style={{
+                    color: "rgb(168,104,109)",
+                    backgroun: "rgb(248,215,218)",
+                    boderRadius: "3px",
+                    padding: "2px 2px 2px 10px",
+                    fontSizr: "0.8rem",
+                    marginBottom: "0.5rem"
+                  }}>
+                    {errorPassword}
+                  </div>
+                )}
               </Form.Group>
 
               <Form.Group  controlId="formGridAddress1">
@@ -139,7 +190,7 @@ const Dashboard = () => {
               <Button variant="secondary" onClick={handleClose}>
                 Cancelar
               </Button>
-              <Button variant="primary" onClick={createUsuarios}>
+              <Button variant="primary" onClick={validaDados}>
                 Registrar
               </Button>
             </Modal.Footer>

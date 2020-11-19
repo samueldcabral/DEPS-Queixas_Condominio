@@ -16,8 +16,15 @@ import Dropdown from "react-bootstrap/Dropdown"
 const Dashboard = () => {
   const [queixas, setQueixas] = useState([]);
   const [show, setShow] = useState(false); //Modal state
+
+  //Model Queixa
   const [titulo, setTitulo] = useState("");
   const [privada, setPrivada] = useState(false);
+  const [descricao, setDescricao] = useState("");
+  const [gravidade, setGravidade] = useState("");
+  const [status_id, setStatus_id] = useState("");
+  const [tipo, setTipo] = useState("");
+  const [criado_por, setCriado_por] = useState("");
 
   //Modal functions
   const handleClose = () => setShow(false);
@@ -27,10 +34,10 @@ const Dashboard = () => {
     let result = await getApiQueixas();
 
     let resultArr = result.data.map((element) => {
-      let {created_at, descricao, gravidade, privacidade, status_id, 
+      let {criado_por, created_at, descricao, gravidade, privacidade, status_id, 
         tipo, titulo, updated_at, usuarios_ids, _id} = element;
       
-      return new Queixa(created_at, descricao, gravidade, privacidade, status_id, 
+      return new Queixa(criado_por, created_at, descricao, gravidade, privacidade, status_id, 
           tipo, titulo, updated_at, usuarios_ids, _id);
     })
 
@@ -77,12 +84,42 @@ const Dashboard = () => {
           <Modal.Body>
 
           <Form>
-            <Form.Group controlId="formBasicEmail">
+            <Form.Group>
               <Form.Label>Título da denúncia</Form.Label>
               <Form.Control type="text" placeholder="Digite o título" value={titulo} onChange={(e) => setTitulo(e.target.value)}/>
             </Form.Group>
+            <Form.Group>
+              <Form.Label>Descrição</Form.Label>
+              <Form.Control as="textarea" placeholder="Detalhe aqui sua denúncia" value={titulo} onChange={(e) => setDescricao(e.target.value)}/>
+            </Form.Group>
+            <Form.Group controlId="exampleForm.SelectCustom">
+                <Form.Label>Gravidade</Form.Label>
+                <Form.Control as="select" onChange={(e) => setGravidade(e.target.value)}>
+                  <option value="Leve">Leve</option>
+                  <option value="Moderada">Moderada</option>
+                  <option value="Grave">Grave</option>
+                  <option value="Gravissima">Gravíssima</option>
+                </Form.Control>
+              </Form.Group>
+            <Form.Group controlId="exampleForm.SelectCustom">
+                <Form.Label>Tipo</Form.Label>
+                <Form.Control as="select" onChange={(e) => setTipo(e.target.value)}>
+                  <option value="Homicidio">Homicídio</option>
+                  <option value="Roubo">Roubo</option>
+                  <option value="Furto">Furto</option>
+                  <option value="Pertubacao Publica">Pertubação Pública</option>
+                </Form.Control>
+              </Form.Group>
             <Form.Group controlId="formBasicCheckbox">
               <Form.Check type="checkbox" label="É denúncia privada?" checked={privada} onChange={(e) => setPrivada(e.target.checked)}/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Criado por</Form.Label>
+              <Form.Control type="text" placeholder="Criado por" value={titulo} onChange={(e) => setCriado_por(e.target.value)}/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Status</Form.Label>
+              <Form.Control type="text" placeholder="Escolha o status" value={titulo} onChange={(e) => setCriado_por(e.target.value)}/>
             </Form.Group>
           </Form>
 
@@ -109,6 +146,7 @@ const Dashboard = () => {
               <th>Gravidade</th>
               <th>Privado?</th>
               <th>Criado_em</th>
+              <th>Criado_por</th>
               <th>Abrir</th>
               <th>Editar</th>
               <th>Excluir</th>
@@ -126,6 +164,7 @@ const Dashboard = () => {
                   <td>{queixa.gravidade}</td>
                   <td>{queixa.privacidade ? "Sim" : "Não"}</td>
                   <td>{new Date(queixa.created_at).toUTCString()}</td>
+                  <td>{queixa.criado_por}</td>
                   <td><Button size="sm">Vizualizar</Button></td>
                   <td><Button size="sm">Editar</Button></td>
                   <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
