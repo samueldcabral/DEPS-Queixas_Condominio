@@ -1,22 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import "./App.css";
+
+import { QueixaProvider } from "./store/queixa";
 
 import Home from "./components/Home/Home";
 import Dashboard from "./components/Dashboard/Dashboard";
 import DashboardUser from "./components/DashboardUser/DashboardUser";
 import MyNavbar from "./components/MyNavbar/MyNavbar";
-
-import {QueixaContext} from "./store/store";
+import VisualizarQueixa from "./components/Queixa/VisualizarQueixa";
 
 function App() {
-  const [user, setUser] = useState();
-
   return (
-    <QueixaContext.Provider value={{
-      user,
-      setUser
-    }}>
+    <QueixaProvider>
       <Router>
         <MyNavbar/>
 
@@ -24,10 +20,10 @@ function App() {
           <Route path="/" exact component={Home}/>
           <Route path="/dashboard" exact component={Dashboard}/>
           <Route path="/dashboardUser" exact component={DashboardUser}/>
+          <Route path="/queixa/:queixaId" exact component={VisualizarQueixa}/>
         </Switch>
       </Router>
-
-    </QueixaContext.Provider>
+    </QueixaProvider>
   );
   
 }

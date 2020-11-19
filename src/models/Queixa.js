@@ -12,6 +12,7 @@ export default class Queixa{
   privacidade = false;
   status_id = "";
   created_at = "";
+  criado_por = "";
 
   constructor(
     criado_por,

@@ -16,6 +16,10 @@ export async function getApiQueixas() {
   return await api.get("/queixas");
 }
 
+export async function getApiQueixa(queixaId) {
+  return await api.get(`/queixas/${queixaId}`);
+}
+
 export async function createApiQueixas(queixa) {
   return await api.post("/queixas", {
     queixa,
