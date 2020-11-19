@@ -6,6 +6,8 @@ const api = axios.create({
     Accept: "application/json",
     "Content-Type": "application/json",
     "Acces-Control-Allow-Origin": "*",
+    
+    //TODO deixar dinamico
     "X-Usuario-Email":"joaozinho@teste.com",
     "X-Usuario-Token":"y94S-wkLUZy59-QW-x1G"
   },
