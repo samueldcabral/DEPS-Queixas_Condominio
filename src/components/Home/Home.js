@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/Button';
 const Home = () => {
   const history = useHistory();
 
-  const {setUser} = useContext(QueixaContext)
+  const {user, setUser} = useContext(QueixaContext)
 
   useEffect(() => {
     setUser(prevState => ({...prevState, nome: "José"}));
@@ -23,6 +23,8 @@ const Home = () => {
   const handleSubmit = (e) => {
     history.push("/Dashboard");
   }
+
+  console.log(user)
 
   return (
       <div style={{display: "flex", flex: "100%", width:"60%", margin: "auto", height: "90vh"}}>

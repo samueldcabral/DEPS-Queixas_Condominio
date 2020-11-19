@@ -27,3 +27,7 @@ export async function createApiQueixas(queixa) {
     queixa,
   });
 }
+
+export async function getApiComentarios(queixaId) {
+  return await api.get(`/comentarios/find_by_queixa_id/${queixaId}`);
+}
