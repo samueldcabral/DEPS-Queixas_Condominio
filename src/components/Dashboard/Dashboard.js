@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 
-import {getApiQueixas, deleteApiQueixas} from "../../services/api";
+import {getApiQueixas, deleteApiQueixas, getApiUsuarios} from "../../services/api";
 import Queixa from "../../models/Queixa";
+import Usuario from "../../models/Usuario";
 
 import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
@@ -15,6 +16,7 @@ import Dropdown from "react-bootstrap/Dropdown"
 
 const Dashboard = () => {
   const [queixas, setQueixas] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
   const [show, setShow] = useState(false); //Modal state
 
   //Model Queixa
@@ -26,9 +28,51 @@ const Dashboard = () => {
   const [tipo, setTipo] = useState("");
   const [criado_por, setCriado_por] = useState("");
 
+  //Model Usuário
+  const [_id, setId] = useState("");
+  const [email, setEmail] = useState("");
+  const [nome, setNome] = useState("");
+  const [password, setPassword] = useState("");
+  const [password_confirmation, setPassword_confirmation] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [perfil_id, setPerfil_id] = useState("");
+  const [queixa_ids, setQueixa_ids] = useState("");
+  const [created_at, setCreated_at] = useState("");
+  const [updated_at, setUpdated_at] = useState("");
+
   //Modal functions
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [criado_porQueixa, setCriado_porQueixa] = useState("")
+
+
+  const queixaUsuario = () => {
+    queixas.forEach((queixa) => {
+      usuarios.forEach((usuario) => {
+        if (queixa.criado_por == usuario._id.$oid){
+          console.log(usuario.nome)
+          return (usuario.nome)
+        }
+      })
+    })
+  }
+
+  queixaUsuario()
+
+  const getUsuarios = async () => {
+    let result = await getApiUsuarios();
+
+    let resultArr = result.data.map((element) => {
+      let {_id, email, password, password_confirmation, 
+        nome, endereco, perfil_id, queixa_ids, created_at, updated_at} = element;
+      
+      return new Usuario(_id, email, password, password_confirmation, 
+        nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
+    })
+
+    setUsuarios(resultArr);
+  }
 
   const getQueixas = async () => {
     let result = await getApiQueixas();
@@ -52,6 +96,7 @@ const Dashboard = () => {
 
   useEffect(() => {
 
+    getUsuarios();
     getQueixas();
 
     return () => {};
@@ -154,23 +199,29 @@ const Dashboard = () => {
           </thead>
           <tbody>
     
-            {queixas && queixas.map((queixa,idx)=> {
-              return(
-                <tr>
-                  <td>{idx+1}</td>
-                  <td>{queixa.titulo}</td>
-                  <td>{queixa.descricao}</td>
-                  <td>{queixa.tipo}</td>
-                  <td>{queixa.gravidade}</td>
-                  <td>{queixa.privacidade ? "Sim" : "Não"}</td>
-                  <td>{new Date(queixa.created_at).toUTCString()}</td>
-                  <td>{queixa.criado_por}</td>
-                  <td><Button size="sm">Vizualizar</Button></td>
-                  <td><Button size="sm">Editar</Button></td>
-                  <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
-                </tr>
-              )
-            })}
+            {
+              if (queixas){
+                queixas.map((queixa,idx)=> {
+                  const ListaQueixas = () => {
+                    <tr>
+                      <td>{idx+1}</td>
+                      <td>{queixa.titulo}</td>
+                      <td>{queixa.descricao}</td>
+                      <td>{queixa.tipo}</td>
+                      <td>{queixa.gravidade}</td>
+                      <td>{queixa.privacidade ? "Sim" : "Não"}</td>
+                      <td>{new Date(queixa.created_at).toUTCString()}</td>
+                      <td>{queixa.criado_por}</td>
+                      <td><Button size="sm">Vizualizar</Button></td>
+                      <td><Button size="sm">Editar</Button></td>
+                      <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
+                    </tr>
+                  }
+                  return(
+                  )
+                })
+              }
+            
           
           </tbody>
         </Table>
