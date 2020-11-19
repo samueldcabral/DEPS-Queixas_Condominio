@@ -24,7 +24,8 @@ const MyNavbar = () => {
     <Navbar.Brand onClick={() => history.push("/")} className="queixa_logo">Queixas de Condomínio</Navbar.Brand>
     <Nav className="mr-auto">
       <Nav.Link href="#home">Tela inicial</Nav.Link>
-      <Nav.Link href="#features">Queixas</Nav.Link>
+      <Nav.Link onClick={() => history.push("/Dashboard")}>Queixas</Nav.Link>
+      <Nav.Link onClick={() => history.push("/DashboardUser")}>Usuários</Nav.Link>
 
     </Nav>
     {state ? <div>user is {state.email}</div> 

@@ -6,10 +6,8 @@ const api = axios.create({
     Accept: "application/json",
     "Content-Type": "application/json",
     "Acces-Control-Allow-Origin": "*",
-    
-    //TODO deixar dinamico
-    "X-Usuario-Email":"joaozinho@teste.com",
-    "X-Usuario-Token":"y94S-wkLUZy59-QW-x1G"
+    "X-Usuario-Email":"adminjose@admin.com",
+    "X-Usuario-Token":"DmAscNefsBfCk1bz8oDv"
   },
 });
 
@@ -23,7 +21,31 @@ export async function getApiQueixa(queixaId) {
 }
 
 export async function createApiQueixas(queixa) {
-  return await api.post("queixas", {
+  return await api.post("/queixas", {
     queixa,
+  });
+}
+
+export async function deleteApiQueixas(queixa) {
+  return await api.delete("/queixas/"+queixa.$oid, {
+    queixa,
+  });
+}
+
+
+//Usuarios
+export async function getApiUsuarios() {
+  return await api.get("/usuarios");
+}
+
+export async function createApiUsuarios(usuario) {
+  return await api.post("/sign_up", {
+    usuario,
+  });
+}
+
+export async function deleteApiUsuarios(usuario) {
+  return await api.delete("/usuarios/"+usuario.$oid, {
+    usuario,
   });
 }

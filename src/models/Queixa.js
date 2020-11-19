@@ -1,5 +1,6 @@
 export default class Queixa{
   _id = "";
+  criado_por = "";
   tipo = "";
   gravidade = "";
   titulo = [];
