@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 
+import { useHistory } from "react-router-dom";
+
 import {getApiQueixas, deleteApiQueixas, getApiUsuarios, createApiQueixas} from "../../services/api";
 import Queixa from "../../models/Queixa";
 import Usuario from "../../models/Usuario";
@@ -18,6 +20,7 @@ const Dashboard = () => {
   const [queixas, setQueixas] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [show, setShow] = useState(false); //Modal state
+  const history = useHistory();
 
   //Model Queixa
   const [titulo, setTitulo] = useState("");
@@ -92,10 +95,31 @@ const Dashboard = () => {
     getQueixas();
   }
 
+  const getDadosApi = async () => {
+    let result = await getApiUsuarios();
+    let resultArr = result.data.map((element) => {
+      let {_id, email, password, password_confirmation, 
+        nome, endereco, perfil_id, queixa_ids, created_at, updated_at} = element;
+      
+      return new Usuario(_id, email, password, password_confirmation, 
+        nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
+    })
+    setUsuarios(resultArr);
+
+    let result2 = await getApiQueixas();
+    let resultArr2 = result2.data.map((element) => {
+      let {criado_por, created_at, descricao, gravidade, privacidade, status_id, 
+        tipo, titulo, updated_at, usuarios_ids, _id} = element;
+      
+      return new Queixa(criado_por, created_at, descricao, gravidade, privacidade, status_id, 
+          tipo, titulo, updated_at, usuarios_ids, _id);
+    })
+    setQueixas(resultArr2);
+  } 
+
   useEffect(() => {
 
-    getUsuarios();
-    getQueixas();
+    getDadosApi();
 
     return () => {};
   }, []);
@@ -217,22 +241,25 @@ const Dashboard = () => {
           <tbody>
             {
               queixas && queixas.map((queixa,idx)=> {
-                const userName = usuarios.filter((user) => user._id.$oid === queixa.criado_por)
-                return(
-                  <tr>
-                    <td>{idx+1}</td>
-                    <td>{queixa.titulo}</td>
-                    <td>{queixa.descricao}</td>
-                    <td>{queixa.tipo}</td>
-                    <td>{queixa.gravidade}</td>
-                    <td>{queixa.privacidade ? "Sim" : "Não"}</td>
-                    <td>{new Date(queixa.created_at).toUTCString()}</td>
-                    <td>{userName[0].nome}</td>
-                    <td><Button size="sm">Vizualizar</Button></td>
-                    <td><Button size="sm">Editar</Button></td>
-                    <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
-                  </tr>
-                )
+
+                  const userName = usuarios.filter((user) => user._id.$oid === queixa.criado_por)
+                  console.log(queixa._id.$oid)
+                  return(
+                    <tr>
+                      <td>{idx+1}</td>
+                      <td>{queixa.titulo}</td>
+                      <td>{queixa.descricao}</td>
+                      <td>{queixa.tipo}</td>
+                      <td>{queixa.gravidade}</td>
+                      <td>{queixa.privacidade ? "Sim" : "Não"}</td>
+                      <td>{new Date(queixa.created_at).toUTCString()}</td>
+                      <td>{userName[0].nome}</td>
+                      <td><Button size="sm" onClick={() => history.push("/queixa/"+queixa._id.$oid)}>Vizualizar</Button></td>
+                      <td><Button size="sm">Editar</Button></td>
+                      <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
+                    </tr>
+                  )
+
               })
             }
           </tbody>
