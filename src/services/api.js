@@ -6,10 +6,16 @@ const api = axios.create({
     Accept: "application/json",
     "Content-Type": "application/json",
     "Acces-Control-Allow-Origin": "*",
-    "X-Usuario-Email":"adminjose@admin.com",
-    "X-Usuario-Token":"DmAscNefsBfCk1bz8oDv"
+    // "X-Usuario-Email": localStorage.getItem("email") ? localStorage.getItem("email") : "4adminjose@admin.com",
+    // "X-Usuario-Token": localStorage.getItem("token") ? localStorage.getItem("token") : "4DmAscNefsBfCk1bz8oDv"
   },
 });
+
+//Middleware
+export function setAxiosHeaders({email, authentication_token}){
+  api.defaults.headers["X-Usuario-Email"] = email;
+  api.defaults.headers["X-Usuario-Token"] = authentication_token;
+}
 
 //exemplos de funcoes pra api
 export async function getApiQueixas() {
@@ -44,8 +50,19 @@ export async function createApiUsuarios(usuario) {
   });
 }
 
+export async function loginApiUsuario(usuario) {
+  return await api.post("/sign_in", {
+    usuario
+  })
+}
+
 export async function deleteApiUsuarios(usuario) {
   return await api.delete("/usuarios/"+usuario.$oid, {
     usuario,
   });
+}
+
+//perfils
+export async function getApiPerfils() {
+  return await api.get("/perfils");
 }
