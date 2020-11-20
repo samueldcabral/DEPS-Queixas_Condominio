@@ -76,10 +76,10 @@ const Dashboard = () => {
   }, []);
 
   const validaDados = () => {
-    let status = false;
+    let status = true;
     usuarios.map((usuario)=> {
       if (usuario.email === email){
-        let status = true;
+        let status = false;
         setErrorEmail("E-mail já cadastrado!")
       }
     })

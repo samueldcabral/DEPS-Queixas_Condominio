@@ -54,7 +54,6 @@ const Dashboard = () => {
 
   const getUsuarios = async () => {
     let result = await getApiUsuarios();
-
     let resultArr = result.data.map((element) => {
       let {_id, email, password, password_confirmation, 
         nome, endereco, perfil_id, queixa_ids, created_at, updated_at} = element;
@@ -62,13 +61,11 @@ const Dashboard = () => {
       return new Usuario(_id, email, password, password_confirmation, 
         nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
     })
-
     setUsuarios(resultArr);
   }
 
   const getQueixas = async () => {
     let result = await getApiQueixas();
-
     let resultArr = result.data.map((element) => {
       let {criado_por, created_at, descricao, gravidade, privacidade, status_id, 
         tipo, titulo, updated_at, usuarios_ids, _id} = element;
@@ -76,7 +73,6 @@ const Dashboard = () => {
       return new Queixa(criado_por, created_at, descricao, gravidade, privacidade, status_id, 
           tipo, titulo, updated_at, usuarios_ids, _id);
     })
-
     setQueixas(resultArr);
   }
 
@@ -91,7 +87,6 @@ const Dashboard = () => {
 
   const deleteQueixas = async (queixaID) => {
     await deleteApiQueixas(queixaID);
-    
     getQueixas();
   }
 
@@ -243,7 +238,6 @@ const Dashboard = () => {
               queixas && queixas.map((queixa,idx)=> {
 
                   const userName = usuarios.filter((user) => user._id.$oid === queixa.criado_por)
-                  console.log(queixa._id.$oid)
                   return(
                     <tr>
                       <td>{idx+1}</td>
