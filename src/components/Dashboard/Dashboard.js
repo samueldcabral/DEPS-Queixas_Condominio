@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 
-import {getApiQueixas, deleteApiQueixas, getApiUsuarios} from "../../services/api";
+import {getApiQueixas, deleteApiQueixas, getApiUsuarios, createApiQueixas} from "../../services/api";
 import Queixa from "../../models/Queixa";
 import Usuario from "../../models/Usuario";
 
@@ -27,6 +27,7 @@ const Dashboard = () => {
   const [status_id, setStatus_id] = useState("");
   const [tipo, setTipo] = useState("");
   const [criado_por, setCriado_por] = useState("");
+  const [usuarios_ids, setUsuarios_id] = useState([]);
 
   //Model Usuário
   const [_id, setId] = useState("");
@@ -45,6 +46,7 @@ const Dashboard = () => {
   const handleShow = () => setShow(true);
 
   const [criado_porQueixa, setCriado_porQueixa] = useState("")
+  const [errorTitulo, setErrorTitulo] = useState("");
 
 
   const queixaUsuario = () => {
@@ -88,6 +90,15 @@ const Dashboard = () => {
     setQueixas(resultArr);
   }
 
+  const createQueixas = async () => {
+    handleClose()
+    let queixa = new Queixa(criado_por, created_at, descricao, gravidade, privada, status_id, 
+      tipo, titulo, updated_at, usuarios_ids, _id);
+      console.log(queixa)
+    await createApiQueixas(queixa);
+    getQueixas();
+  }
+
   const deleteQueixas = async (queixaID) => {
     await deleteApiQueixas(queixaID);
     
@@ -103,6 +114,15 @@ const Dashboard = () => {
   }, []);
 
 
+  const validaDados = () => {
+    queixas.map((queixa)=> {
+      if (queixa.titulo === titulo){
+        setErrorTitulo("Título já cadastrado!")
+      }else{
+        createQueixas()
+      }
+    })
+  }
 
   
   return (
@@ -135,7 +155,7 @@ const Dashboard = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label>Descrição</Form.Label>
-              <Form.Control as="textarea" placeholder="Detalhe aqui sua denúncia" value={titulo} onChange={(e) => setDescricao(e.target.value)}/>
+              <Form.Control as="textarea" placeholder="Detalhe aqui sua denúncia" value={descricao} onChange={(e) => setDescricao(e.target.value)}/>
             </Form.Group>
             <Form.Group controlId="exampleForm.SelectCustom">
                 <Form.Label>Gravidade</Form.Label>
@@ -160,12 +180,22 @@ const Dashboard = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label>Criado por</Form.Label>
-              <Form.Control type="text" placeholder="Criado por" value={titulo} onChange={(e) => setCriado_por(e.target.value)}/>
+              <Form.Control type="text" placeholder="Criado por" value={criado_por} onChange={(e) => setCriado_por(e.target.value)}/>
             </Form.Group>
-            <Form.Group>
-              <Form.Label>Status</Form.Label>
-              <Form.Control type="text" placeholder="Escolha o status" value={titulo} onChange={(e) => setCriado_por(e.target.value)}/>
-            </Form.Group>
+
+            {/* Isso só aparece se o usuário logado for admin, se não, o padrão é pendente */}
+            {/* Onde perfil_id vai ser o usuário que vem no contexto */}
+            {/* { perfil_id == "Admin" (          */}
+              <Form.Group controlId="exampleForm.SelectCustom">
+                <Form.Label>Tipo</Form.Label>
+                  <Form.Control as="select" onChange={(e) => setStatus_id(e.target.value)}>
+                    <option value="5fa1ba373ca57304b0fe6f8c">Aberto</option>
+                    <option value="5fa1ba423ca57304b0fe6f8e">Fechado</option>
+                    <option value="5fa1bae73ca57304b0fe6f90">Pendente</option>
+                </Form.Control>
+              </Form.Group>
+            {/* )} */}
+
           </Form>
 
           </Modal.Body>
@@ -173,7 +203,7 @@ const Dashboard = () => {
             <Button variant="secondary" onClick={handleClose}>
               Cancelar
             </Button>
-            <Button variant="primary" onClick={handleClose}>
+            <Button variant="primary" onClick={validaDados}>
               Registrar
             </Button>
           </Modal.Footer>
@@ -199,7 +229,7 @@ const Dashboard = () => {
           </thead>
           <tbody>
     
-            {
+            {/* {
               if (queixas){
                 queixas.map((queixa,idx)=> {
                   const ListaQueixas = () => {
@@ -220,7 +250,7 @@ const Dashboard = () => {
                   return(
                   )
                 })
-              }
+              } */}
             
           
           </tbody>

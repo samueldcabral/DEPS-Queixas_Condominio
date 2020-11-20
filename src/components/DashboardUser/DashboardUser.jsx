@@ -57,7 +57,7 @@ const Dashboard = () => {
     handleClose()
     let user = new Usuario(_id, email, password, password_confirmation, 
       nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
-      console.log(user)
+      
     await createApiUsuarios(user);
     getUsuarios();
   }
