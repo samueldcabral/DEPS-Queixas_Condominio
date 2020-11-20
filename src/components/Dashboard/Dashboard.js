@@ -49,19 +49,6 @@ const Dashboard = () => {
   const [errorTitulo, setErrorTitulo] = useState("");
 
 
-  const queixaUsuario = () => {
-    queixas.forEach((queixa) => {
-      usuarios.forEach((usuario) => {
-        if (queixa.criado_por === usuario._id.$oid){
-          // console.log(usuario.nome)
-          return `${usuario.nome}`
-        }
-      })
-    })
-  }
-
-  queixaUsuario()
-
   const getUsuarios = async () => {
     let result = await getApiUsuarios();
 
