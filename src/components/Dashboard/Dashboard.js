@@ -52,9 +52,9 @@ const Dashboard = () => {
   const queixaUsuario = () => {
     queixas.forEach((queixa) => {
       usuarios.forEach((usuario) => {
-        if (queixa.criado_por == usuario._id.$oid){
-          console.log(usuario.nome)
-          return (usuario.nome)
+        if (queixa.criado_por === usuario._id.$oid){
+          // console.log(usuario.nome)
+          return `${usuario.nome}`
         }
       })
     })
@@ -228,31 +228,26 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-    
-            {/* {
-              if (queixas){
-                queixas.map((queixa,idx)=> {
-                  const ListaQueixas = () => {
-                    <tr>
-                      <td>{idx+1}</td>
-                      <td>{queixa.titulo}</td>
-                      <td>{queixa.descricao}</td>
-                      <td>{queixa.tipo}</td>
-                      <td>{queixa.gravidade}</td>
-                      <td>{queixa.privacidade ? "Sim" : "Não"}</td>
-                      <td>{new Date(queixa.created_at).toUTCString()}</td>
-                      <td>{queixa.criado_por}</td>
-                      <td><Button size="sm">Vizualizar</Button></td>
-                      <td><Button size="sm">Editar</Button></td>
-                      <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
-                    </tr>
-                  }
-                  return(
-                  )
-                })
-              } */}
-            
-          
+            {
+              queixas && queixas.map((queixa,idx)=> {
+                const userName = usuarios.filter((user) => user._id.$oid === queixa.criado_por)
+                return(
+                  <tr>
+                    <td>{idx+1}</td>
+                    <td>{queixa.titulo}</td>
+                    <td>{queixa.descricao}</td>
+                    <td>{queixa.tipo}</td>
+                    <td>{queixa.gravidade}</td>
+                    <td>{queixa.privacidade ? "Sim" : "Não"}</td>
+                    <td>{new Date(queixa.created_at).toUTCString()}</td>
+                    <td>{userName[0].nome}</td>
+                    <td><Button size="sm">Vizualizar</Button></td>
+                    <td><Button size="sm">Editar</Button></td>
+                    <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
+                  </tr>
+                )
+              })
+            }
           </tbody>
         </Table>
       </div>
