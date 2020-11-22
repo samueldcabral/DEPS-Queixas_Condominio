@@ -15,28 +15,28 @@ export default class Queixa{
   criado_por = "";
 
   constructor(
-    criado_por,
+    _id,
     created_at,
-    descricao,
-    gravidade,
-    privacidade,
-    status_id,
-    tipo,
-    titulo,
     updated_at,
     usuarios_ids,
-    _id,
+    status_id,
+    privacidade,
+    descricao,
+    titulo,
+    gravidade,
+    tipo,
+    criado_por,
   ){
-    this.criado_por = criado_por;
     this._id = _id;
-    this.created_at = created_at
-    this.descricao = descricao
-    this.gravidade = gravidade
-    this.privacidade = privacidade
-    this.status_id = status_id;
-    this.tipo = tipo
-    this.titulo = titulo;
+    this.created_at = created_at;
     this.updated_at = updated_at;
     this.usuarios_ids = usuarios_ids;
+    this.status_id = status_id;
+    this.privacidade = privacidade;
+    this.descricao = descricao;
+    this.titulo = titulo;
+    this.gravidade = gravidade;
+    this.tipo = tipo;
+    this.criado_por = criado_por;
   }
 }
