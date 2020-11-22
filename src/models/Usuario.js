@@ -1,5 +1,5 @@
 export default class Usuario{
-    _id = "";
+    id = "";
     email = "";
     password = "";
     password_confirmation = "";
@@ -11,10 +11,10 @@ export default class Usuario{
     updated_at = "";
   
     constructor(
-        _id,
+        id,
         email,
-        password,
-        password_confirmation,
+        password = "",
+        password_confirmation = "",
         nome,
         endereco,
         perfil_id,
@@ -23,7 +23,7 @@ export default class Usuario{
         updated_at
 
     ){
-      this._id = _id;
+      this.id = id;
       this.email = email;
       this.password = password;
       this.password_confirmation = password_confirmation;

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Dashboard.css";
+import {QueixaContext} from "../../store/queixa";
 
 import { useHistory } from "react-router-dom";
 
@@ -22,7 +23,10 @@ const Dashboard = () => {
   const [show, setShow] = useState(false); //Modal state
   const history = useHistory();
 
+  const {user} = useContext(QueixaContext);
+
   //Model Queixa
+  const [_id, set_Id] = useState("");
   const [titulo, setTitulo] = useState("");
   const [privada, setPrivada] = useState(false);
   const [descricao, setDescricao] = useState("");
@@ -33,14 +37,14 @@ const Dashboard = () => {
   const [usuarios_ids, setUsuarios_id] = useState([]);
 
   //Model Usuário
-  const [_id, setId] = useState("");
+  const [id, setId] = useState("");
   const [email, setEmail] = useState("");
   const [nome, setNome] = useState("");
   const [password, setPassword] = useState("");
   const [password_confirmation, setPassword_confirmation] = useState("");
   const [endereco, setEndereco] = useState("");
   const [perfil_id, setPerfil_id] = useState("");
-  const [queixa_ids, setQueixa_ids] = useState("");
+  const [queixa_ids, setQueixa_ids] = useState([]);
   const [created_at, setCreated_at] = useState("");
   const [updated_at, setUpdated_at] = useState("");
 
@@ -48,17 +52,37 @@ const Dashboard = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [criado_porQueixa, setCriado_porQueixa] = useState("")
   const [errorTitulo, setErrorTitulo] = useState("");
 
+  const getDadosApi = async () => {
+    let result = await getApiUsuarios();
+    let resultArr = result.data.map((element) => {
+      let {id, email, password, password_confirmation, 
+        nome, endereco, perfil_id, queixa_ids, created_at, updated_at} = element;
+      
+      return new Usuario(id, email, password, password_confirmation, 
+        nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
+    })
+    setUsuarios(resultArr);
+
+    let result2 = await getApiQueixas();
+    let resultArr2 = result2.data.map((element) => {
+      let {_id, created_at, updated_at, usuarios_ids, status_id,
+        privada, descricao, titulo, gravidade, tipo, criado_por} = element;
+      
+      return new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
+        privada, descricao, titulo, gravidade, tipo, criado_por);
+    })
+    setQueixas(resultArr2);
+  } 
 
   const getUsuarios = async () => {
     let result = await getApiUsuarios();
     let resultArr = result.data.map((element) => {
-      let {_id, email, password, password_confirmation, 
-        nome, endereco, perfil_id, queixa_ids, created_at, updated_at} = element;
+      let {id, email, nome, endereco, perfil_id, queixa_ids,
+        created_at, updated_at} = element;
       
-      return new Usuario(_id, email, password, password_confirmation, 
+      return new Usuario(id, email, password, password_confirmation, 
         nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
     })
     setUsuarios(resultArr);
@@ -67,58 +91,14 @@ const Dashboard = () => {
   const getQueixas = async () => {
     let result = await getApiQueixas();
     let resultArr = result.data.map((element) => {
-      let {criado_por, created_at, descricao, gravidade, privacidade, status_id, 
-        tipo, titulo, updated_at, usuarios_ids, _id} = element;
+      let {_id, created_at, updated_at, usuarios_ids, status_id,
+        privada, descricao, titulo, gravidade, tipo, criado_por} = element;
       
-      return new Queixa(criado_por, created_at, descricao, gravidade, privacidade, status_id, 
-          tipo, titulo, updated_at, usuarios_ids, _id);
+      return new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
+        privada, descricao, titulo, gravidade, tipo, criado_por);
     })
     setQueixas(resultArr);
   }
-
-  const createQueixas = async () => {
-    handleClose()
-    let queixa = new Queixa(criado_por, created_at, descricao, gravidade, privada, status_id, 
-      tipo, titulo, updated_at, usuarios_ids, _id);
-      console.log(queixa)
-    await createApiQueixas(queixa);
-    getQueixas();
-  }
-
-  const deleteQueixas = async (queixaID) => {
-    await deleteApiQueixas(queixaID);
-    getQueixas();
-  }
-
-  const getDadosApi = async () => {
-    let result = await getApiUsuarios();
-    let resultArr = result.data.map((element) => {
-      let {_id, email, password, password_confirmation, 
-        nome, endereco, perfil_id, queixa_ids, created_at, updated_at} = element;
-      
-      return new Usuario(_id, email, password, password_confirmation, 
-        nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
-    })
-    setUsuarios(resultArr);
-
-    let result2 = await getApiQueixas();
-    let resultArr2 = result2.data.map((element) => {
-      let {criado_por, created_at, descricao, gravidade, privacidade, status_id, 
-        tipo, titulo, updated_at, usuarios_ids, _id} = element;
-      
-      return new Queixa(criado_por, created_at, descricao, gravidade, privacidade, status_id, 
-          tipo, titulo, updated_at, usuarios_ids, _id);
-    })
-    setQueixas(resultArr2);
-  } 
-
-  useEffect(() => {
-
-    getDadosApi();
-
-    return () => {};
-  }, []);
-
 
   const validaDados = () => {
     queixas.map((queixa)=> {
@@ -130,7 +110,27 @@ const Dashboard = () => {
     })
   }
 
-  
+  const createQueixas = async () => {
+    handleClose()
+    let queixa = new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
+      privada, descricao, titulo, gravidade, tipo, user._id.$oid);
+      console.log(queixa)
+    await createApiQueixas(queixa);
+    getQueixas();
+  }
+
+  const deleteQueixas = async (queixaID) => {
+    await deleteApiQueixas(queixaID);
+    getQueixas();
+  }
+
+  useEffect(() => {
+
+    getDadosApi();
+
+    return () => {};
+  }, []);
+
   return (
     <Container className="Container">
       <h1 className="mt-5 titulo">Verifique aqui suas queixas recentes</h1>
@@ -158,6 +158,18 @@ const Dashboard = () => {
             <Form.Group>
               <Form.Label>Título da denúncia</Form.Label>
               <Form.Control type="text" placeholder="Digite o título" value={titulo} onChange={(e) => setTitulo(e.target.value)}/>
+              {errorTitulo && (
+                  <div style={{
+                    color: "rgb(168,104,109)",
+                    backgroun: "rgb(248,215,218)",
+                    boderRadius: "3px",
+                    padding: "2px 2px 2px 10px",
+                    fontSizr: "0.8rem",
+                    marginBottom: "0.5rem"
+                  }}>
+                    {errorTitulo}
+                  </div>
+                )}
             </Form.Group>
             <Form.Group>
               <Form.Label>Descrição</Form.Label>
@@ -184,16 +196,12 @@ const Dashboard = () => {
             <Form.Group controlId="formBasicCheckbox">
               <Form.Check type="checkbox" label="É denúncia privada?" checked={privada} onChange={(e) => setPrivada(e.target.checked)}/>
             </Form.Group>
-            <Form.Group>
-              <Form.Label>Criado por</Form.Label>
-              <Form.Control type="text" placeholder="Criado por" value={criado_por} onChange={(e) => setCriado_por(e.target.value)}/>
-            </Form.Group>
 
             {/* Isso só aparece se o usuário logado for admin, se não, o padrão é pendente */}
             {/* Onde perfil_id vai ser o usuário que vem no contexto */}
             {/* { perfil_id == "Admin" (          */}
               <Form.Group controlId="exampleForm.SelectCustom">
-                <Form.Label>Tipo</Form.Label>
+                <Form.Label>Status</Form.Label>
                   <Form.Control as="select" onChange={(e) => setStatus_id(e.target.value)}>
                     <option value="5fa1ba373ca57304b0fe6f8c">Aberto</option>
                     <option value="5fa1ba423ca57304b0fe6f8e">Fechado</option>
@@ -237,7 +245,7 @@ const Dashboard = () => {
             {
               queixas && queixas.map((queixa,idx)=> {
 
-                  const userName = usuarios.filter((user) => user._id.$oid === queixa.criado_por)
+                  const userName = usuarios.filter((user) => user.id.$oid === queixa.criado_por)
                   return(
                     <tr>
                       <td>{idx+1}</td>
