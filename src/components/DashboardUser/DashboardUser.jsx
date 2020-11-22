@@ -20,7 +20,7 @@ const Dashboard = () => {
   const [show, setShow] = useState(false);
 
   //Model Usuário
-  const [_id, setId] = useState("");
+  const [id, setId] = useState("");
   const [email, setEmail] = useState("");
   const [nome, setNome] = useState("");
   const [password, setPassword] = useState("");
@@ -43,28 +43,40 @@ const Dashboard = () => {
     let result = await getApiUsuarios();
 
     let resultArr = result.data.map((element) => {
-      let {_id, email, password, password_confirmation, 
-        nome, endereco, perfil_id, queixa_ids, created_at, updated_at} = element;
+      let {id, email, nome, endereco, perfil_id, queixa_ids,
+        created_at, updated_at} = element;
       
-      return new Usuario(_id, email, password, password_confirmation, 
+      return new Usuario(id, email, password, password_confirmation, 
         nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
     })
-
     setUsuarios(resultArr);
+  }
+
+  const validaDados = () => {
+    let status = true;
+    usuarios.map((usuario)=> {
+      if (usuario.email === email){
+        let status = false;
+        setErrorEmail("E-mail já cadastrado!")
+      }
+    })
+    if(password !== password_confirmation){
+      setErrorPassword("As senhas estão diferentes!")
+    }else if (password === password_confirmation && status == true){
+      createUsuarios()
+    }
   }
 
   const createUsuarios = async () => {
     handleClose()
-    let user = new Usuario(_id, email, password, password_confirmation, 
+    let user = new Usuario(id, email, password, password_confirmation, 
       nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
-      
     await createApiUsuarios(user);
     getUsuarios();
   }
 
   const deleteUsuarios = async (usuarioId) => {
     await deleteApiUsuarios(usuarioId);
-    
     getUsuarios();
   }
 
@@ -75,20 +87,103 @@ const Dashboard = () => {
     return () => {};
   }, []);
 
-  const validaDados = () => {
-    let status = false;
-    usuarios.map((usuario)=> {
-      if (usuario.email === email){
-        let status = true;
-        setErrorEmail("E-mail já cadastrado!")
-      }
-    })
-    if(password !== password_confirmation){
-      setErrorPassword("As senhas estão diferentes!")
-    }else if (password === password_confirmation && status == true){
-      createUsuarios()
-    }
+  const modalEditUser = (usuario) => {
+    setShow(true);
+    console.log(usuario)
+    return (
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Atualize o usuário</Modal.Title>
+        </Modal.Header>
+        
+        <Modal.Body>
+        <Form>
+
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>E-mail do usuário</Form.Label>
+            <Form.Control type="email" placeholder="name@example.com" value={usuario.email} onChange={(e) => setEmail(e.target.value)}/>
+            {errorEmail && (
+              <div style={{
+                color: "rgb(168,104,109)",
+                backgroun: "rgb(248,215,218)",
+                boderRadius: "3px",
+                padding: "2px 2px 2px 10px",
+                fontSizr: "0.8rem",
+                marginBottom: "0.5rem"
+              }}>
+                {errorEmail}
+              </div>
+            )}
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Nome do usuário</Form.Label>
+            <Form.Control type="text" placeholder="Digite o nome do usuário" value={usuario.nome} onChange={(e) => setNome(e.target.value)}/>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Senha</Form.Label>
+            <Form.Control type="password" placeholder="Senha" value={usuario.password} onChange={(e) => setPassword(e.target.value)}/>
+            {errorPassword && (
+              <div style={{
+                color: "rgb(168,104,109)",
+                backgroun: "rgb(248,215,218)",
+                boderRadius: "3px",
+                padding: "2px 2px 2px 10px",
+                fontSizr: "0.8rem",
+                marginBottom: "0.5rem"
+              }}>
+                {errorPassword}
+              </div>
+            )}
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Confirme a senha</Form.Label>
+            <Form.Control type="password" placeholder="Repita a senha" value={usuario.password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)}/>
+            {errorPassword && (
+              <div style={{
+                color: "rgb(168,104,109)",
+                backgroun: "rgb(248,215,218)",
+                boderRadius: "3px",
+                padding: "2px 2px 2px 10px",
+                fontSizr: "0.8rem",
+                marginBottom: "0.5rem"
+              }}>
+                {errorPassword}
+              </div>
+            )}
+          </Form.Group>
+
+          <Form.Group  controlId="formGridAddress1">
+            <Form.Label>Endereco</Form.Label>
+            <Form.Control type="text" placeholder="Endereço" value={usuario.endereco} onChange={(e) => setEndereco(e.target.value)}/>
+          </Form.Group>
+
+          <Form.Group controlId="exampleForm.SelectCustom">
+            <Form.Label>Perfil</Form.Label>
+            <Form.Control as="select" onChange={(e) => setPerfil_id(e.target.value)}>
+              <option value="5fa1b6d84debe72ed41388ad">Comum</option>
+              <option value="5fa1b6b64debe72ed41388ac">Admin</option>
+            </Form.Control>
+          </Form.Group>
+
+        </Form>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={validaDados}>
+            Registrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    )
   }
+
+
 
   return (
     <Container className="Container">
@@ -224,8 +319,9 @@ const Dashboard = () => {
                   <td>{usuario.perfil_id.$oid === "5fa1b6d84debe72ed41388ad" ? "Comum" : "Administrador"}</td>
                   {/* <td>{usuario.queixa_ids}</td> */}
                   {/* <td>{new Date(usuario.created_at).toUTCString()}</td> */}
-                  <td><Button size="sm">Editar</Button></td>
-                  <td><Button size="sm" onClick={() => deleteUsuarios(usuario._id)}>Excluir</Button></td>
+                  {/* <td><Button size="sm">Editar</Button></td> */}
+                  <td><Button size="sm" onClick={() => modalEditUser(usuario)}>Editar</Button></td>
+                  <td><Button size="sm" onClick={() => deleteUsuarios(usuario.id)}>Excluir</Button></td>
                 </tr>
               )
             })}

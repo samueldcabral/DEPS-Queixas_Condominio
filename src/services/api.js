@@ -35,6 +35,12 @@ export async function createApiQueixas(queixa) {
   });
 }
 
+export async function updateApiQueixas(queixa) {
+  return await api.put("/queixas/"+queixa.$oid, {
+    queixa,
+  });
+}
+
 export async function deleteApiQueixas(queixa) {
   return await api.delete("/queixas/"+queixa.$oid, {
     queixa,
@@ -57,6 +63,12 @@ export async function loginApiUsuario(usuario) {
   return await api.post("/sign_in", {
     usuario
   })
+}
+
+export async function updateApiUsuarios(usuario) {
+  return await api.put("/usuarios/"+usuario.$oid, {
+    usuario,
+  });
 }
 
 export async function deleteApiUsuarios(usuario) {

@@ -13,8 +13,8 @@ export default class Usuario{
     constructor(
         id,
         email,
-        password,
-        password_confirmation,
+        password = "",
+        password_confirmation = "",
         nome,
         endereco,
         perfil_id,
