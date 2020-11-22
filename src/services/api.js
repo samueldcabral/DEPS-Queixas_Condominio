@@ -6,8 +6,8 @@ const api = axios.create({
     Accept: "application/json",
     "Content-Type": "application/json",
     "Acces-Control-Allow-Origin": "*",
-    // "X-Usuario-Email": localStorage.getItem("email") ? localStorage.getItem("email") : "4adminjose@admin.com",
-    // "X-Usuario-Token": localStorage.getItem("token") ? localStorage.getItem("token") : "4DmAscNefsBfCk1bz8oDv"
+    // "X-Usuario-Email": localStorage.getItem("email") ? localStorage.getItem("email") : "adminjose@admin.com",
+    // "X-Usuario-Token": localStorage.getItem("token") ? localStorage.getItem("token") : "DmAscNefsBfCk1bz8oDv"
   },
 });
 
@@ -17,7 +17,10 @@ export function setAxiosHeaders({email, authentication_token}){
   api.defaults.headers["X-Usuario-Token"] = authentication_token;
 }
 
-//exemplos de funcoes pra api
+export async function getApiComentarios(queixaId) {
+  return await api.get(`/comentarios/find_by_queixa_id/${queixaId}`);
+}
+
 export async function getApiQueixas() {
   return await api.get("/queixas");
 }
@@ -60,6 +63,10 @@ export async function deleteApiUsuarios(usuario) {
   return await api.delete("/usuarios/"+usuario.$oid, {
     usuario,
   });
+}
+
+export async function getApiUsuario(usuarioId) {
+  return await api.get(`/usuarios/${usuarioId}`);
 }
 
 //perfils
