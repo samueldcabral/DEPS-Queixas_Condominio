@@ -38,6 +38,7 @@ const Dashboard = () => {
   // const [criado_por, setCriado_por] = useState("");
   // const [usuarios_ids, setUsuarios_id] = useState([]);
 
+
   //Model Usuário
   const [id, setId] = useState("");
   const [email, setEmail] = useState("");
@@ -191,7 +192,9 @@ const Dashboard = () => {
                       <td>{queixa.gravidade}</td>
                       <td>{queixa.privacidade ? "Sim" : "Não"}</td>
                       <td>{new Date(queixa.created_at).toUTCString()}</td>
+
                       <td>{userName.nome}</td>
+
                       <td><Button size="sm" onClick={() => history.push("/queixa/"+queixa._id.$oid)}>Vizualizar</Button></td>
                       <td><Button size="sm">Editar</Button></td>
                       <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
