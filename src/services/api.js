@@ -29,8 +29,21 @@ export async function getApiQueixa(queixaId) {
   return await api.get(`/queixas/${queixaId}`);
 }
 
-export async function createApiQueixas(queixa) {
-  return await api.post("/queixas", {
+export async function createApiQueixas(status_id, privada, descricao, titulo, gravidade, tipo, userId) {
+  return await api.post("/queixas", 
+  {
+    "status_id": status_id,
+    "privacidade": privada,
+    "descricao": descricao,
+    "titulo": titulo,
+    "gravidade": gravidade,
+    "tipo": tipo,
+    "criado_por": userId
+  });
+}
+
+export async function updateApiQueixas(queixa) {
+  return await api.put("/queixas/"+queixa.$oid, {
     queixa,
   });
 }

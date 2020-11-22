@@ -17,6 +17,8 @@ import ButtonGroup from "react-bootstrap/ButtonGroup"
 import DropdownButton from "react-bootstrap/DropdownButton"
 import Dropdown from "react-bootstrap/Dropdown"
 
+import CriarQueixa from "../Queixa/CriarQueixa"
+
 const Dashboard = () => {
   const [queixas, setQueixas] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
@@ -25,16 +27,17 @@ const Dashboard = () => {
 
   const {user} = useContext(QueixaContext);
 
-  //Model Queixa
-  const [_id, set_Id] = useState("");
-  const [titulo, setTitulo] = useState("");
-  const [privada, setPrivada] = useState(false);
-  const [descricao, setDescricao] = useState("");
-  const [gravidade, setGravidade] = useState("");
-  const [status_id, setStatus_id] = useState("");
-  const [tipo, setTipo] = useState("");
-  const [criado_por, setCriado_por] = useState("");
-  const [usuarios_ids, setUsuarios_id] = useState([]);
+  // //Model Queixa
+  // const [_id, set_Id] = useState("");
+  // const [titulo, setTitulo] = useState("");
+  // const [privada, setPrivada] = useState(false);
+  // const [descricao, setDescricao] = useState("");
+  // const [gravidade, setGravidade] = useState("");
+  // const [status_id, setStatus_id] = useState("");
+  // const [tipo, setTipo] = useState("");
+  // const [criado_por, setCriado_por] = useState("");
+  // const [usuarios_ids, setUsuarios_id] = useState([]);
+
 
   //Model Usuário
   const [id, setId] = useState("");
@@ -52,7 +55,7 @@ const Dashboard = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [errorTitulo, setErrorTitulo] = useState("");
+  // const [errorTitulo, setErrorTitulo] = useState("");
 
   const getDadosApi = async () => {
     let result = await getApiUsuarios();
@@ -74,6 +77,9 @@ const Dashboard = () => {
         privada, descricao, titulo, gravidade, tipo, criado_por);
     })
     setQueixas(resultArr2);
+
+    getUsuarios();
+    console.log(usuarios)
   } 
 
   const getUsuarios = async () => {
@@ -100,24 +106,24 @@ const Dashboard = () => {
     setQueixas(resultArr);
   }
 
-  const validaDados = () => {
-    queixas.map((queixa)=> {
-      if (queixa.titulo === titulo){
-        setErrorTitulo("Título já cadastrado!")
-      }else{
-        createQueixas()
-      }
-    })
-  }
+  // const validaDados = () => {
+  //   queixas.map((queixa)=> {
+  //     if (queixa.titulo === titulo){
+  //       setErrorTitulo("Título já cadastrado!")
+  //     }else{
+  //       createQueixas()
+  //     }
+  //   })
+  // }
 
-  const createQueixas = async () => {
-    handleClose()
-    let queixa = new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
-      privada, descricao, titulo, gravidade, tipo, user._id.$oid);
-      console.log(queixa)
-    await createApiQueixas(queixa);
-    getQueixas();
-  }
+  // const createQueixas = async () => {
+  //   handleClose()
+  //   let queixa = new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
+  //     privada, descricao, titulo, gravidade, tipo, user._id.$oid);
+  //     console.log(queixa)
+  //   await createApiQueixas(queixa);
+  //   getQueixas();
+  // }
 
   const deleteQueixas = async (queixaID) => {
     await deleteApiQueixas(queixaID);
@@ -149,78 +155,8 @@ const Dashboard = () => {
         </ButtonGroup>
 
         <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Registre sua denúncia</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-
-          <Form>
-            <Form.Group>
-              <Form.Label>Título da denúncia</Form.Label>
-              <Form.Control type="text" placeholder="Digite o título" value={titulo} onChange={(e) => setTitulo(e.target.value)}/>
-              {errorTitulo && (
-                  <div style={{
-                    color: "rgb(168,104,109)",
-                    backgroun: "rgb(248,215,218)",
-                    boderRadius: "3px",
-                    padding: "2px 2px 2px 10px",
-                    fontSizr: "0.8rem",
-                    marginBottom: "0.5rem"
-                  }}>
-                    {errorTitulo}
-                  </div>
-                )}
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Descrição</Form.Label>
-              <Form.Control as="textarea" placeholder="Detalhe aqui sua denúncia" value={descricao} onChange={(e) => setDescricao(e.target.value)}/>
-            </Form.Group>
-            <Form.Group controlId="exampleForm.SelectCustom">
-                <Form.Label>Gravidade</Form.Label>
-                <Form.Control as="select" onChange={(e) => setGravidade(e.target.value)}>
-                  <option value="Leve">Leve</option>
-                  <option value="Moderada">Moderada</option>
-                  <option value="Grave">Grave</option>
-                  <option value="Gravissima">Gravíssima</option>
-                </Form.Control>
-              </Form.Group>
-            <Form.Group controlId="exampleForm.SelectCustom">
-                <Form.Label>Tipo</Form.Label>
-                <Form.Control as="select" onChange={(e) => setTipo(e.target.value)}>
-                  <option value="Homicidio">Homicídio</option>
-                  <option value="Roubo">Roubo</option>
-                  <option value="Furto">Furto</option>
-                  <option value="Pertubacao Publica">Pertubação Pública</option>
-                </Form.Control>
-              </Form.Group>
-            <Form.Group controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="É denúncia privada?" checked={privada} onChange={(e) => setPrivada(e.target.checked)}/>
-            </Form.Group>
-
-            {/* Isso só aparece se o usuário logado for admin, se não, o padrão é pendente */}
-            {/* Onde perfil_id vai ser o usuário que vem no contexto */}
-            {/* { perfil_id == "Admin" (          */}
-              <Form.Group controlId="exampleForm.SelectCustom">
-                <Form.Label>Status</Form.Label>
-                  <Form.Control as="select" onChange={(e) => setStatus_id(e.target.value)}>
-                    <option value="5fa1ba373ca57304b0fe6f8c">Aberto</option>
-                    <option value="5fa1ba423ca57304b0fe6f8e">Fechado</option>
-                    <option value="5fa1bae73ca57304b0fe6f90">Pendente</option>
-                </Form.Control>
-              </Form.Group>
-            {/* )} */}
-
-          </Form>
-
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cancelar
-            </Button>
-            <Button variant="primary" onClick={validaDados}>
-              Registrar
-            </Button>
-          </Modal.Footer>
+        {/* componente modal */}
+        <CriarQueixa getQueixas={getQueixas} handleClose={handleClose} queixas={queixas}></CriarQueixa>
         </Modal>
       </div>
 
@@ -245,7 +181,8 @@ const Dashboard = () => {
             {
               queixas && queixas.map((queixa,idx)=> {
 
-                  const userName = usuarios.filter((user) => user.id.$oid === queixa.criado_por)
+                  const userName = usuarios.find((user) => user.id.$oid === queixa.criado_por)
+                  console.log(queixas)
                   return(
                     <tr>
                       <td>{idx+1}</td>
@@ -255,7 +192,9 @@ const Dashboard = () => {
                       <td>{queixa.gravidade}</td>
                       <td>{queixa.privacidade ? "Sim" : "Não"}</td>
                       <td>{new Date(queixa.created_at).toUTCString()}</td>
-                      <td>{userName[0].nome}</td>
+
+                      <td>{userName.nome}</td>
+
                       <td><Button size="sm" onClick={() => history.push("/queixa/"+queixa._id.$oid)}>Vizualizar</Button></td>
                       <td><Button size="sm">Editar</Button></td>
                       <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
