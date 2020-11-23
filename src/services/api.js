@@ -48,6 +48,12 @@ export async function updateApiQueixas(queixa) {
   });
 }
 
+export async function updateApiQueixas(queixa) {
+  return await api.put("/queixas/"+queixa.$oid, {
+    queixa,
+  });
+}
+
 export async function deleteApiQueixas(queixa) {
   return await api.delete("/queixas/"+queixa.$oid, {
     queixa,
