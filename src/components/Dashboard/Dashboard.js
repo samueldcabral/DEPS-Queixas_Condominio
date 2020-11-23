@@ -101,13 +101,19 @@ const Dashboard = () => {
   }
 
   const validaDados = () => {
+    let passou = true
     queixas.map((queixa)=> {
       if (queixa.titulo === titulo){
+        passou = false
         setErrorTitulo("Título já cadastrado!")
-      }else{
-        createQueixas()
+      }else if (titulo == ""){
+        passou = false
+        setErrorTitulo("Título não pode ser vazio")
       }
     })
+    if (passou == true){
+      createQueixas()
+    }
   }
 
   const createQueixas = async () => {
