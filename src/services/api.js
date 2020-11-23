@@ -53,7 +53,15 @@ export async function deleteApiQueixas(queixa) {
     queixa,
   });
 }
-
+//comentarios
+export async function createApiComentarios(descricao, queixaId, userId) {
+  return await api.post("/comentarios", 
+  {
+    "descricao": descricao,
+    "usuario_id": userId,
+    "queixa_id": queixaId
+  });
+}
 
 //Usuarios
 export async function getApiUsuarios() {
