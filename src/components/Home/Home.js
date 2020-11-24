@@ -4,7 +4,7 @@ import HousePng from "./../../assets/img/house.png"
 
 import {useHistory} from "react-router-dom";
 
-import {loginApiUsuario, setAxiosHeaders, getApiPerfils} from "../../services/api";
+import {loginApiUsuario, setAxiosHeaders, getApiPerfils, getLoggedUser} from "../../services/api";
 
 import { QueixaContext } from '../../store/queixa'
 
@@ -24,6 +24,13 @@ const Home = () => {
   const {user, setUser} = useContext(QueixaContext)
 
   useEffect(() => {
+    if(localStorage.getItem("userId")){
+      if(localStorage.getItem("userPerfil") === "admin"){
+          history.push("/Dashboard")
+        }else {
+          history.push("/dashboardUser")
+        }
+    }
     return () => {};
   }, []);
 
@@ -31,6 +38,11 @@ const Home = () => {
     try {
       setLoading(true);
       const result = await loginApiUsuario(usuario);
+
+      localStorage.setItem("userId", result.data.data.usuario._id.$oid)
+      localStorage.setItem("userEmail", result.data.data.usuario.email)
+      localStorage.setItem("userToken", result.data.data.usuario.authentication_token)
+      
       setUser(result.data.data.usuario);
       setAxiosHeaders(result.data.data.usuario);
 
@@ -39,11 +51,14 @@ const Home = () => {
       const nomePerfil = perfilApi[0].tipo
       setUser(prevState => ({...prevState, perfil: nomePerfil}));
 
-      if(nomePerfil === "admin"){
-        history.push("/Dashboard")
-      }else {
-        history.push("/dashboardUser")
-      }
+      localStorage.setItem("userPerfil", nomePerfil)
+
+      console.log("Chegou na parte da rota")
+      // if(nomePerfil === "admin"){
+      //   history.push("/Dashboard")
+      // }else {
+      //   history.push("/dashboardUser")
+      // }
 
     } catch (error) {
       setErros(prevState => ({...prevState, 
