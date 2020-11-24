@@ -11,7 +11,35 @@ const api = axios.create({
   },
 });
 
+export async function getLoggedUser() {
+  const userId = localStorage.getItem("userId");
+  if(userId) {
+    setAxiosHeadersLocalStorage(localStorage.getItem("userEmail"), localStorage.getItem("userToken"))
+    const result = await getApiUsuarios();
+    
+    const user = result.data.find(element => element.id.$oid === userId);
+    const userPerfil = await getPerfilFromUser(user.perfil_id.$oid);
+    user.perfil = userPerfil;
+
+    return user;
+
+  }else{
+    return null;
+  }
+}
+
+export async function getPerfilFromUser(userId) {
+  const result2 = await getApiPerfils();
+  const perfilApi = result2.data.filter((perfil) => perfil._id.$oid === userId)
+  return perfilApi[0].tipo
+}
+
 //Middleware
+export function setAxiosHeadersLocalStorage(email, authentication_token) {
+  api.defaults.headers["X-Usuario-Email"] = email;
+  api.defaults.headers["X-Usuario-Token"] = authentication_token;
+}
+
 export function setAxiosHeaders({email, authentication_token}){
   api.defaults.headers["X-Usuario-Email"] = email;
   api.defaults.headers["X-Usuario-Token"] = authentication_token;
