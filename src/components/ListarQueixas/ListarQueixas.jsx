@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import "./Dashboard.css";
+import "./ListarQueixas.css";
 import {QueixaContext} from "../../store/queixa";
 
 import { useHistory } from "react-router-dom";
@@ -19,7 +19,7 @@ import Dropdown from "react-bootstrap/Dropdown"
 
 import CriarQueixa from "../Queixa/CriarQueixa"
 
-const Dashboard = () => {
+const ListarQueixas = () => {
   const [queixas, setQueixas] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [show, setShow] = useState(false); //Modal state
@@ -139,7 +139,7 @@ const Dashboard = () => {
 
   return (
     <Container className="Container">
-      <h1 className="mt-5 titulo">Verifique aqui suas queixas recentes</h1>
+      <h1 className="mt-5 titulo">Verifique aqui as queixas recentes</h1>
 
       <div className="div-conteudo">
         {/* {queixas && <p>{JSON.stringify(queixas, null, '\t')}</p>} */}
@@ -211,4 +211,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default ListarQueixas;
