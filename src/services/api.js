@@ -17,10 +17,12 @@ export function setAxiosHeaders({email, authentication_token}){
   api.defaults.headers["X-Usuario-Token"] = authentication_token;
 }
 
+//Comentarios
 export async function getApiComentarios(queixaId) {
   return await api.get(`/comentarios/find_by_queixa_id/${queixaId}`);
 }
 
+//Queixas
 export async function getApiQueixas() {
   return await api.get("/queixas");
 }
@@ -48,12 +50,6 @@ export async function updateApiQueixas(queixa) {
   });
 }
 
-export async function updateApiQueixas(queixa) {
-  return await api.put("/queixas/"+queixa.$oid, {
-    queixa,
-  });
-}
-
 export async function deleteApiQueixas(queixa) {
   return await api.delete("/queixas/"+queixa.$oid, {
     queixa,
@@ -64,6 +60,10 @@ export async function deleteApiQueixas(queixa) {
 //Usuarios
 export async function getApiUsuarios() {
   return await api.get("/usuarios");
+}
+
+export async function getApiUsuario(usuarioId) {
+  return await api.get(`/usuarios/${usuarioId}`);
 }
 
 export async function createApiUsuarios(usuario) {
@@ -90,9 +90,6 @@ export async function deleteApiUsuarios(usuario) {
   });
 }
 
-export async function getApiUsuario(usuarioId) {
-  return await api.get(`/usuarios/${usuarioId}`);
-}
 
 //perfils
 export async function getApiPerfils() {

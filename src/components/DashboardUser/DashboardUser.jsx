@@ -13,11 +13,14 @@ import ButtonGroup from "react-bootstrap/ButtonGroup"
 import DropdownButton from "react-bootstrap/DropdownButton"
 import Dropdown from "react-bootstrap/Dropdown"
 
+import CriarUsuario from "../Usuario/CriarUsuario"
+
 const Dashboard = () => {
   const [usuarios, setUsuarios] = useState([]);
 
  //Modal state
   const [show, setShow] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
 
   //Model Usuário
   const [id, setId] = useState("");
@@ -38,6 +41,13 @@ const Dashboard = () => {
   //Modal functions
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleShowEdit = (usuario) => {
+    setShowEdit(true);
+    modalEditUser(usuario)
+
+  }
+  const handleCloseEdit = () => setShowEdit(true);
+
 
   const getUsuarios = async () => {
     let result = await getApiUsuarios();
@@ -88,99 +98,102 @@ const Dashboard = () => {
   }, []);
 
   const modalEditUser = (usuario) => {
-    setShow(true);
+    setShowEdit(true);
     console.log(usuario)
     return (
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Atualize o usuário</Modal.Title>
-        </Modal.Header>
-        
-        <Modal.Body>
-        <Form>
+      <>
+        <Modal show={showEdit} onHide={handleCloseEdit}>
+          <Modal.Header closeButton>
+            <Modal.Title>Atualize o usuário</Modal.Title>
+          </Modal.Header>
+          
+          <Modal.Body>
+          <Form>
 
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>E-mail do usuário</Form.Label>
-            <Form.Control type="email" placeholder="name@example.com" value={usuario.email} onChange={(e) => setEmail(e.target.value)}/>
-            {errorEmail && (
-              <div style={{
-                color: "rgb(168,104,109)",
-                backgroun: "rgb(248,215,218)",
-                boderRadius: "3px",
-                padding: "2px 2px 2px 10px",
-                fontSizr: "0.8rem",
-                marginBottom: "0.5rem"
-              }}>
-                {errorEmail}
-              </div>
-            )}
-          </Form.Group>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>E-mail do usuário</Form.Label>
+              <Form.Control type="email" placeholder="name@example.com" value={usuario.email} onChange={(e) => setEmail(e.target.value)}/>
+              {errorEmail && (
+                <div style={{
+                  color: "rgb(168,104,109)",
+                  backgroun: "rgb(248,215,218)",
+                  boderRadius: "3px",
+                  padding: "2px 2px 2px 10px",
+                  fontSizr: "0.8rem",
+                  marginBottom: "0.5rem"
+                }}>
+                  {errorEmail}
+                </div>
+              )}
+            </Form.Group>
 
-          <Form.Group>
-            <Form.Label>Nome do usuário</Form.Label>
-            <Form.Control type="text" placeholder="Digite o nome do usuário" value={usuario.nome} onChange={(e) => setNome(e.target.value)}/>
-          </Form.Group>
+            <Form.Group>
+              <Form.Label>Nome do usuário</Form.Label>
+              <Form.Control type="text" placeholder="Digite o nome do usuário" value={usuario.nome} onChange={(e) => setNome(e.target.value)}/>
+            </Form.Group>
 
-          <Form.Group>
-            <Form.Label>Senha</Form.Label>
-            <Form.Control type="password" placeholder="Senha" value={usuario.password} onChange={(e) => setPassword(e.target.value)}/>
-            {errorPassword && (
-              <div style={{
-                color: "rgb(168,104,109)",
-                backgroun: "rgb(248,215,218)",
-                boderRadius: "3px",
-                padding: "2px 2px 2px 10px",
-                fontSizr: "0.8rem",
-                marginBottom: "0.5rem"
-              }}>
-                {errorPassword}
-              </div>
-            )}
-          </Form.Group>
+            <Form.Group>
+              <Form.Label>Senha</Form.Label>
+              <Form.Control type="password" placeholder="Senha" value={usuario.password} onChange={(e) => setPassword(e.target.value)}/>
+              {errorPassword && (
+                <div style={{
+                  color: "rgb(168,104,109)",
+                  backgroun: "rgb(248,215,218)",
+                  boderRadius: "3px",
+                  padding: "2px 2px 2px 10px",
+                  fontSizr: "0.8rem",
+                  marginBottom: "0.5rem"
+                }}>
+                  {errorPassword}
+                </div>
+              )}
+            </Form.Group>
 
-          <Form.Group>
-            <Form.Label>Confirme a senha</Form.Label>
-            <Form.Control type="password" placeholder="Repita a senha" value={usuario.password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)}/>
-            {errorPassword && (
-              <div style={{
-                color: "rgb(168,104,109)",
-                backgroun: "rgb(248,215,218)",
-                boderRadius: "3px",
-                padding: "2px 2px 2px 10px",
-                fontSizr: "0.8rem",
-                marginBottom: "0.5rem"
-              }}>
-                {errorPassword}
-              </div>
-            )}
-          </Form.Group>
+            <Form.Group>
+              <Form.Label>Confirme a senha</Form.Label>
+              <Form.Control type="password" placeholder="Repita a senha" value={usuario.password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)}/>
+              {errorPassword && (
+                <div style={{
+                  color: "rgb(168,104,109)",
+                  backgroun: "rgb(248,215,218)",
+                  boderRadius: "3px",
+                  padding: "2px 2px 2px 10px",
+                  fontSizr: "0.8rem",
+                  marginBottom: "0.5rem"
+                }}>
+                  {errorPassword}
+                </div>
+              )}
+            </Form.Group>
 
-          <Form.Group  controlId="formGridAddress1">
-            <Form.Label>Endereco</Form.Label>
-            <Form.Control type="text" placeholder="Endereço" value={usuario.endereco} onChange={(e) => setEndereco(e.target.value)}/>
-          </Form.Group>
+            <Form.Group  controlId="formGridAddress1">
+              <Form.Label>Endereco</Form.Label>
+              <Form.Control type="text" placeholder="Endereço" value={usuario.endereco} onChange={(e) => setEndereco(e.target.value)}/>
+            </Form.Group>
 
-          <Form.Group controlId="exampleForm.SelectCustom">
-            <Form.Label>Perfil</Form.Label>
-            <Form.Control as="select" onChange={(e) => setPerfil_id(e.target.value)}>
-              <option value="5fa1b6d84debe72ed41388ad">Comum</option>
-              <option value="5fa1b6b64debe72ed41388ac">Admin</option>
-            </Form.Control>
-          </Form.Group>
+            <Form.Group controlId="exampleForm.SelectCustom">
+              <Form.Label>Perfil</Form.Label>
+              <Form.Control as="select" onChange={(e) => setPerfil_id(e.target.value)}>
+                <option value="5fa1b6d84debe72ed41388ad">Comum</option>
+                <option value="5fa1b6b64debe72ed41388ac">Admin</option>
+              </Form.Control>
+            </Form.Group>
 
-        </Form>
-        </Modal.Body>
+          </Form>
+          </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={validaDados}>
-            Registrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseEdit}>
+              Cancelar
+            </Button>
+            <Button variant="primary" onClick={validaDados}>
+              Registrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
     )
+
   }
 
 
@@ -202,93 +215,7 @@ const Dashboard = () => {
           </ButtonGroup>
 
           <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Registre um novo usuário</Modal.Title>
-            </Modal.Header>
-            
-            <Modal.Body>
-            <Form>
-
-              <Form.Group controlId="formBasicEmail">
-                <Form.Label>E-mail do usuário</Form.Label>
-                <Form.Control type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                {errorEmail && (
-                  <div style={{
-                    color: "rgb(168,104,109)",
-                    backgroun: "rgb(248,215,218)",
-                    boderRadius: "3px",
-                    padding: "2px 2px 2px 10px",
-                    fontSizr: "0.8rem",
-                    marginBottom: "0.5rem"
-                  }}>
-                    {errorEmail}
-                  </div>
-                )}
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Nome do usuário</Form.Label>
-                <Form.Control type="text" placeholder="Digite o nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)}/>
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Senha</Form.Label>
-                <Form.Control type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                {errorPassword && (
-                  <div style={{
-                    color: "rgb(168,104,109)",
-                    backgroun: "rgb(248,215,218)",
-                    boderRadius: "3px",
-                    padding: "2px 2px 2px 10px",
-                    fontSizr: "0.8rem",
-                    marginBottom: "0.5rem"
-                  }}>
-                    {errorPassword}
-                  </div>
-                )}
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Confirme a senha</Form.Label>
-                <Form.Control type="password" placeholder="Repita a senha" value={password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)}/>
-                {errorPassword && (
-                  <div style={{
-                    color: "rgb(168,104,109)",
-                    backgroun: "rgb(248,215,218)",
-                    boderRadius: "3px",
-                    padding: "2px 2px 2px 10px",
-                    fontSizr: "0.8rem",
-                    marginBottom: "0.5rem"
-                  }}>
-                    {errorPassword}
-                  </div>
-                )}
-              </Form.Group>
-
-              <Form.Group  controlId="formGridAddress1">
-                <Form.Label>Endereco</Form.Label>
-                <Form.Control type="text" placeholder="Endereço" value={endereco} onChange={(e) => setEndereco(e.target.value)}/>
-              </Form.Group>
-
-              <Form.Group controlId="exampleForm.SelectCustom">
-                <Form.Label>Perfil</Form.Label>
-                <Form.Control as="select" onChange={(e) => setPerfil_id(e.target.value)}>
-                  <option value="5fa1b6d84debe72ed41388ad">Comum</option>
-                  <option value="5fa1b6b64debe72ed41388ac">Admin</option>
-                </Form.Control>
-              </Form.Group>
-
-            </Form>
-            </Modal.Body>
-
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Cancelar
-              </Button>
-              <Button variant="primary" onClick={validaDados}>
-                Registrar
-              </Button>
-            </Modal.Footer>
+            <CriarUsuario getUsuarios={getUsuarios} handleClose={handleClose} usuarios={usuarios}></CriarUsuario>
           </Modal>
         </div>
 
@@ -301,7 +228,7 @@ const Dashboard = () => {
               <th>E-mail</th>
               <th>Endereço</th>
               <th>Perfil</th>
-              {/* <th>Queixas</th> */}
+              <th>Queixas</th>
               {/* <th>Criado_em</th> */}
               <th>Editar</th>
               <th>Excluir</th>
@@ -317,10 +244,10 @@ const Dashboard = () => {
                   <td>{usuario.email}</td>
                   <td>{usuario.endereco}</td>
                   <td>{usuario.perfil_id.$oid === "5fa1b6d84debe72ed41388ad" ? "Comum" : "Administrador"}</td>
-                  {/* <td>{usuario.queixa_ids}</td> */}
+                  <td><Button size="sm">Visualizar</Button></td>
                   {/* <td>{new Date(usuario.created_at).toUTCString()}</td> */}
-                  {/* <td><Button size="sm">Editar</Button></td> */}
-                  <td><Button size="sm" onClick={() => modalEditUser(usuario)}>Editar</Button></td>
+                  <td><Button size="sm" onClick={() => handleShowEdit(usuario)}>Editar</Button></td>
+                  {/* <td><Button size="sm" onClick={() => modalEditUser(usuario)}>Editar</Button></td> */}
                   <td><Button size="sm" onClick={() => deleteUsuarios(usuario.id)}>Excluir</Button></td>
                 </tr>
               )
