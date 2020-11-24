@@ -1,13 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import "./VisualizarQueixa.css";
 
-import { getApiQueixa, getApiComentarios, getApiUsuarios } from "../../services/api";
+import { getApiQueixa, getApiComentarios, getApiUsuarios, createApiComentarios } from "../../services/api";
 import Container from "react-bootstrap/Container"
+import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 import Usuario from "../../models/Usuario";
 import Queixa from "../../models/Queixa";
 import Comentario from "../../models/Comentario";
 import { useParams } from "react-router-dom"
+import { QueixaContext } from "../../store/queixa";
 // import {useHistory} from "react-router-dom";
 
 const VisualizarQueixa = () => {
@@ -17,9 +20,11 @@ const VisualizarQueixa = () => {
   const { queixaId } = useParams();
   const [queixa, setQueixa] = useState(null);
   const [comentarios, setComentarios] = useState([]);
-  const [comentariosUsuario, setComentariosUsuario] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [novoComentario, setNovoComentario] = useState("");
+  const { user } = useContext(QueixaContext);
+
 
   const getQueixa = useCallback(async () => {
     try {
@@ -27,12 +32,12 @@ const VisualizarQueixa = () => {
       setLoading(true);
 
       const result = await getApiQueixa(queixaId);
-      
+
       const { criado_por, created_at, descricao, gravidade, privacidade, status_id,
         tipo, titulo, updated_at, usuarios_ids, _id } = result.data;
 
-      const queixaCriada = new Queixa(criado_por, created_at, descricao, gravidade, privacidade, status_id,
-        tipo, titulo, updated_at, usuarios_ids, _id);
+      const queixaCriada = new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
+        privacidade, descricao, titulo, gravidade, tipo, criado_por);
 
       setQueixa(queixaCriada);
     } catch (erro) {
@@ -44,18 +49,23 @@ const VisualizarQueixa = () => {
 
   const getComentarios = useCallback(async () => {
     let result = await getApiComentarios(queixaId);
-    
+
     let resultArr = result.data.map((element) => {
       let { descricao, usuario_id, queixa_id, id } = element;
       let { nome } = element.usuario
-      // console.log(nome)
       return new Comentario(descricao, usuario_id, queixa_id, id, nome);
     })
 
     setComentarios(resultArr);
-  },[queixaId])
+  }, [queixaId])
 
-  console.dir(comentarios)
+  const createComentarios = async () => {
+    if (novoComentario !== "") {
+      await createApiComentarios(novoComentario, queixaId, user._id.$oid);
+      getComentarios();
+      setNovoComentario("")
+    }
+  }
 
   const getUsuarios = useCallback(async () => {
     let result = await getApiUsuarios();
@@ -67,7 +77,7 @@ const VisualizarQueixa = () => {
     })
 
     setUsuarios(usuarioArr);
-  },[])
+  }, [])
 
   const filtrarUsuarioPorQueixa = (queixa) => {
     const queixaUserName = usuarios.find((user) => user.id.$oid === queixa.criado_por)
@@ -85,7 +95,7 @@ const VisualizarQueixa = () => {
       await getQueixa();
       await getComentarios();
     })()
-    
+
     return () => { };
   }, [getQueixa, getUsuarios, getComentarios]);
 
@@ -98,7 +108,7 @@ const VisualizarQueixa = () => {
       {error !== "" && <h4 style={{ color: "red" }}>Erro: {error}</h4>}
       {!loading && queixa !== null &&
         <div style={{ display: "flex", flex: "100%", flexWrap: "wrap", width: "80%", margin: "auto", height: "90vh" }}>
-          <Card style={{ display: "flex", flex: "100%", flexWrap: "wrap", width: "80%", margin: "auto", height: "50vh" }}>
+          <Card style={{ display: "flex", flex: "100%", flexWrap: "wrap", width: "80%", margin: "auto", minHeight: "30vh" }}>
             <Card.Body>
               <Card.Title><h1>{queixa.titulo}</h1></Card.Title>
               {
@@ -129,6 +139,17 @@ const VisualizarQueixa = () => {
                     )
                   })
                 }
+                <Card>
+                  <Card.Body>
+                    <Form>
+                      <Form.Group>
+                        <Form.Control style={{minHeight: "150px"}}
+                         as="textarea" aria-label="Novo comentário" placeholder="Novo comentário" value={novoComentario} onChange={(e) => setNovoComentario(e.target.value)}/>
+                      </Form.Group>
+                    </Form>
+                  </Card.Body>
+                  <Button variant="primary" onClick={createComentarios}>Comentar</Button>
+                </Card>
               </Card.Text>
             </Card.Body>
           </Card>
