@@ -73,11 +73,11 @@ const Dashboard = () => {
     if(password !== password_confirmation){
       setErrorPassword("As senhas estão diferentes!")
     }else if (password === password_confirmation && status == true){
-      createUsuarios()
+      updateUsuarios()
     }
   }
 
-  const createUsuarios = async () => {
+  const updateUsuarios = async () => {
     handleClose()
     let user = new Usuario(id, email, password, password_confirmation, 
       nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
@@ -231,6 +231,7 @@ const Dashboard = () => {
               <th>Queixas</th>
               {/* <th>Criado_em</th> */}
               <th>Editar</th>
+              <th>Editar2</th>
               <th>Excluir</th>
             </tr>
           </thead>
@@ -247,7 +248,7 @@ const Dashboard = () => {
                   <td><Button size="sm">Visualizar</Button></td>
                   {/* <td>{new Date(usuario.created_at).toUTCString()}</td> */}
                   <td><Button size="sm" onClick={() => handleShowEdit(usuario)}>Editar</Button></td>
-                  {/* <td><Button size="sm" onClick={() => modalEditUser(usuario)}>Editar</Button></td> */}
+                  <td><Button size="sm" onClick={() => modalEditUser(usuario)}>Editar</Button></td>
                   <td><Button size="sm" onClick={() => deleteUsuarios(usuario.id)}>Excluir</Button></td>
                 </tr>
               )
