@@ -7,8 +7,6 @@ import {QueixaContext} from "../../store/queixa";
 
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import { getLoggedUser } from "../../services/api";
 
@@ -41,10 +39,19 @@ const MyNavbar = () => {
     <Navbar bg="primary" variant="dark">
     <Navbar.Brand onClick={() => history.push("/")} className="queixa_logo">Queixas de Condomínio</Navbar.Brand>
     <Nav className="mr-auto">
-      <Nav.Link href="#home">Tela inicial</Nav.Link>
-      <Nav.Link onClick={() => history.push("/Dashboard")}>Queixas</Nav.Link>
-      <Nav.Link onClick={() => history.push("/DashboardUser")}>Usuários</Nav.Link>
-
+      <Nav.Link onClick={() => history.push("/")}>Tela inicial</Nav.Link>
+      {localUser && localUser.perfil === "comum" ? 
+      <>
+        <Nav.Link onClick={() => history.push("/listarQueixas")}>Queixas</Nav.Link>
+        <Nav.Link onClick={() => history.push("/listarUsuarios")}>Usuários</Nav.Link>
+      </>
+      :
+      <>
+        {/* <Nav.Link onClick={() => history.push("/Dashboard")}>QueixasT</Nav.Link>
+        <Nav.Link onClick={() => history.push("/DashboardUser")}>UsuáriosT</Nav.Link> */}
+      </>
+      }
+      
     </Nav>
     {localUser ? <Button variant="outline-light" onClick={handleClick}>Sair do sistema</Button> 
     :

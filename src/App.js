@@ -5,11 +5,13 @@ import "./App.css";
 import { QueixaProvider } from "./store/queixa";
 
 import Home from "./components/Home/Home";
-import Dashboard from "./components/Dashboard/Dashboard";
-import DashboardUser from "./components/DashboardUser/DashboardUser";
+import ListarQueixas from "./components/ListarQueixas/ListarQueixas";
+import ListarUsuarios from "./components/ListarUsuarios/ListarUsuarios";
 import MyNavbar from "./components/MyNavbar/MyNavbar";
 import VisualizarQueixa from "./components/Queixa/VisualizarQueixa";
 import Teste from "./components/Teste/Teste";
+import DashboardAdmin from "./components/DashboardAdmin/DashboardAdmin";
+import DashboardUsuario from "./components/DashboardUsuario/DashboardUsuario";
 
 function App() {
   return (
@@ -19,8 +21,13 @@ function App() {
 
         <Switch>
           <Route path="/" exact component={Home}/>
-          <Route path="/dashboard" exact component={Dashboard}/>
-          <Route path="/dashboardUser" exact component={DashboardUser}/>
+
+          {/* Dashboards / */}
+          <Route path="/dashboard-admin" exact component={DashboardAdmin}/>
+          <Route path="/dashboard" exact component={DashboardUsuario}/>
+
+          <Route path="/listarQueixas" exact component={ListarQueixas}/>
+          <Route path="/listarUsuarios" exact component={ListarUsuarios}/>
           <Route path="/queixa/:queixaId" exact component={VisualizarQueixa}/>
 
           <Route path="/teste" exact component={Teste}/>

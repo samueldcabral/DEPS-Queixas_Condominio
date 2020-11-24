@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "./DashboardUser.css";
+import "./ListarUsuarios.css";
 
-import {getApiUsuarios, deleteApiUsuarios, createApiUsuarios} from "../../services/api";
+import {getApiUsuarios, deleteApiUsuarios, createApiUsuarios, updateApiUsuarios} from "../../services/api";
 import Usuario from "../../models/Usuario";
 
 import Container from "react-bootstrap/Container";
@@ -14,13 +14,24 @@ import DropdownButton from "react-bootstrap/DropdownButton"
 import Dropdown from "react-bootstrap/Dropdown"
 
 import CriarUsuario from "../Usuario/CriarUsuario"
+import { useHistory } from "react-router-dom";
 
-const Dashboard = () => {
+const ListarUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
 
+  const history = useHistory();
+  
  //Modal state
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [modalEmail, setModalEmail] = useState();
+  const [modalId, setModalId] = useState();
+  const [modalNome, setModalNome] = useState();
+  // const [modalPassword, setModalPassword] = useState();
+  // const [modalPasswordConfirmation, setmodalPasswordConfirmation] = useState();
+  const [modalEndereco, setModalEndereco] = useState();
+  const [modalPerfil, setModalPerfil] = useState();
+
 
   //Model Usuário
   const [id, setId] = useState("");
@@ -42,11 +53,19 @@ const Dashboard = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleShowEdit = (usuario) => {
+    console.log(usuario)
     setShowEdit(true);
-    modalEditUser(usuario)
+    setModalEmail(usuario.email);
+    setModalNome(usuario.nome);
+    setModalId(usuario.id.$oid);
+    // setModalPassword(usuario.password);
+    // setmodalPasswordConfirmation(usuario.password_confirmation);
+    setModalEndereco(usuario.endereco);
+    // setModalPerfil(usuario.perfil);
+    // modalEditUser(usuario)
 
   }
-  const handleCloseEdit = () => setShowEdit(true);
+  const handleCloseEdit = () => setShowEdit(false);
 
 
   const getUsuarios = async () => {
@@ -77,6 +96,19 @@ const Dashboard = () => {
     }
   }
 
+  const handleModalEdit = () => {
+    let usuario = {
+      nome: modalNome,
+      email: modalEmail,
+      endereco: modalEndereco,
+      "$oid": modalId
+    }
+
+    updateApiUsuarios(usuario);
+    setShowEdit(false);
+    history.go(0)
+  }
+
   const createUsuarios = async () => {
     handleClose()
     let user = new Usuario(id, email, password, password_confirmation, 
@@ -97,104 +129,14 @@ const Dashboard = () => {
     return () => {};
   }, []);
 
-  const modalEditUser = (usuario) => {
-    setShowEdit(true);
-    console.log(usuario)
-    return (
-      <>
-        <Modal show={showEdit} onHide={handleCloseEdit}>
-          <Modal.Header closeButton>
-            <Modal.Title>Atualize o usuário</Modal.Title>
-          </Modal.Header>
-          
-          <Modal.Body>
-          <Form>
+  // const modalEditUser = (usuario) => {
+  //   setShowEdit(true);
+  //   console.log(usuario)
+  //   return (
+      
+  //   )
 
-            <Form.Group controlId="formBasicEmail">
-              <Form.Label>E-mail do usuário</Form.Label>
-              <Form.Control type="email" placeholder="name@example.com" value={usuario.email} onChange={(e) => setEmail(e.target.value)}/>
-              {errorEmail && (
-                <div style={{
-                  color: "rgb(168,104,109)",
-                  backgroun: "rgb(248,215,218)",
-                  boderRadius: "3px",
-                  padding: "2px 2px 2px 10px",
-                  fontSizr: "0.8rem",
-                  marginBottom: "0.5rem"
-                }}>
-                  {errorEmail}
-                </div>
-              )}
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Nome do usuário</Form.Label>
-              <Form.Control type="text" placeholder="Digite o nome do usuário" value={usuario.nome} onChange={(e) => setNome(e.target.value)}/>
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Senha</Form.Label>
-              <Form.Control type="password" placeholder="Senha" value={usuario.password} onChange={(e) => setPassword(e.target.value)}/>
-              {errorPassword && (
-                <div style={{
-                  color: "rgb(168,104,109)",
-                  backgroun: "rgb(248,215,218)",
-                  boderRadius: "3px",
-                  padding: "2px 2px 2px 10px",
-                  fontSizr: "0.8rem",
-                  marginBottom: "0.5rem"
-                }}>
-                  {errorPassword}
-                </div>
-              )}
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Confirme a senha</Form.Label>
-              <Form.Control type="password" placeholder="Repita a senha" value={usuario.password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)}/>
-              {errorPassword && (
-                <div style={{
-                  color: "rgb(168,104,109)",
-                  backgroun: "rgb(248,215,218)",
-                  boderRadius: "3px",
-                  padding: "2px 2px 2px 10px",
-                  fontSizr: "0.8rem",
-                  marginBottom: "0.5rem"
-                }}>
-                  {errorPassword}
-                </div>
-              )}
-            </Form.Group>
-
-            <Form.Group  controlId="formGridAddress1">
-              <Form.Label>Endereco</Form.Label>
-              <Form.Control type="text" placeholder="Endereço" value={usuario.endereco} onChange={(e) => setEndereco(e.target.value)}/>
-            </Form.Group>
-
-            <Form.Group controlId="exampleForm.SelectCustom">
-              <Form.Label>Perfil</Form.Label>
-              <Form.Control as="select" onChange={(e) => setPerfil_id(e.target.value)}>
-                <option value="5fa1b6d84debe72ed41388ad">Comum</option>
-                <option value="5fa1b6b64debe72ed41388ac">Admin</option>
-              </Form.Control>
-            </Form.Group>
-
-          </Form>
-          </Modal.Body>
-
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseEdit}>
-              Cancelar
-            </Button>
-            <Button variant="primary" onClick={validaDados}>
-              Registrar
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    )
-
-  }
+  // }
 
 
 
@@ -258,8 +200,101 @@ const Dashboard = () => {
       </div>
     {/* </div> */}
 
+
+            {/* ///////////////////////////////////////////////////////////////////////// */}
+            <>
+        <Modal show={showEdit} onHide={handleCloseEdit}>
+          <Modal.Header closeButton>
+            <Modal.Title>Atualize o usuário</Modal.Title>
+          </Modal.Header>
+          
+          <Modal.Body>
+          <Form>
+
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>E-mail do usuário</Form.Label>
+              <Form.Control type="email" placeholder="name@example.com" value={modalEmail} onChange={(e) => setModalEmail(e.target.value)}/>
+              {errorEmail && (
+                <div style={{
+                  color: "rgb(168,104,109)",
+                  backgroun: "rgb(248,215,218)",
+                  boderRadius: "3px",
+                  padding: "2px 2px 2px 10px",
+                  fontSizr: "0.8rem",
+                  marginBottom: "0.5rem"
+                }}>
+                  {errorEmail}
+                </div>
+              )}
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Nome do usuário</Form.Label>
+              <Form.Control type="text" placeholder="Digite o nome do usuário" value={modalNome} onChange={(e) => setModalNome(e.target.value)}/>
+            </Form.Group>
+
+            {/* <Form.Group>
+              <Form.Label>Senha</Form.Label>
+              <Form.Control type="password" placeholder="Senha" value={modalPassword} onChange={(e) => setModalPassword(e.target.value)}/>
+              {errorPassword && (
+                <div style={{
+                  color: "rgb(168,104,109)",
+                  backgroun: "rgb(248,215,218)",
+                  boderRadius: "3px",
+                  padding: "2px 2px 2px 10px",
+                  fontSizr: "0.8rem",
+                  marginBottom: "0.5rem"
+                }}>
+                  {errorPassword}
+                </div>
+              )}
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Confirme a senha</Form.Label>
+              <Form.Control type="password" placeholder="Repita a senha" value={modalPasswordConfirmation} onChange={(e) => setmodalPasswordConfirmation(e.target.value)}/>
+              {errorPassword && (
+                <div style={{
+                  color: "rgb(168,104,109)",
+                  backgroun: "rgb(248,215,218)",
+                  boderRadius: "3px",
+                  padding: "2px 2px 2px 10px",
+                  fontSizr: "0.8rem",
+                  marginBottom: "0.5rem"
+                }}>
+                  {errorPassword}
+                </div>
+              )}
+            </Form.Group> */}
+
+            <Form.Group  controlId="formGridAddress1">
+              <Form.Label>Endereco</Form.Label>
+              <Form.Control type="text" placeholder="Endereço" value={modalEndereco} onChange={(e) => setModalEndereco(e.target.value)}/>
+            </Form.Group>
+
+            {/* <Form.Group controlId="exampleForm.SelectCustom">
+              <Form.Label>Perfil</Form.Label>
+              <Form.Control value={modalPerfil} as="select" onChange={(e) => setModalPerfil(e.target.value)}>
+                <option value="5fa1b6d84debe72ed41388ad">Comum</option>
+                <option value="5fa1b6b64debe72ed41388ac">Admin</option>
+              </Form.Control>
+            </Form.Group> */}
+
+          </Form>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseEdit}>
+              Cancelar
+            </Button>
+            <Button variant="primary" onClick={handleModalEdit}>
+              Atualizar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
     </Container>
   );
 };
 
-export default Dashboard;
+export default ListarUsuarios;

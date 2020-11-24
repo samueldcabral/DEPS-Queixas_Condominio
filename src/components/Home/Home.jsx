@@ -26,9 +26,9 @@ const Home = () => {
   useEffect(() => {
     if(localStorage.getItem("userId")){
       if(localStorage.getItem("userPerfil") === "admin"){
-          history.push("/Dashboard")
+          history.push("/dashboard-admin")
         }else {
-          history.push("/dashboardUser")
+          history.push("/dashboard")
         }
     }
     return () => {};
@@ -54,11 +54,11 @@ const Home = () => {
       localStorage.setItem("userPerfil", nomePerfil)
 
       console.log("Chegou na parte da rota")
-      // if(nomePerfil === "admin"){
-      //   history.push("/Dashboard")
-      // }else {
-      //   history.push("/dashboardUser")
-      // }
+      if(nomePerfil === "admin"){
+        history.push("/dashboard-admin")
+      }else {
+        history.push("/dashboard")
+      }
 
     } catch (error) {
       setErros(prevState => ({...prevState, 
