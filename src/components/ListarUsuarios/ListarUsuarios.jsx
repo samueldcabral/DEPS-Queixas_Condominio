@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "./DashboardUser.css";
+import "./ListarUsuarios.css";
 
-import {getApiUsuarios, deleteApiUsuarios, createApiUsuarios} from "../../services/api";
+import {getApiUsuarios, deleteApiUsuarios, createApiUsuarios, updateApiUsuarios} from "../../services/api";
 import Usuario from "../../models/Usuario";
 
 import Container from "react-bootstrap/Container";
@@ -14,13 +14,24 @@ import DropdownButton from "react-bootstrap/DropdownButton"
 import Dropdown from "react-bootstrap/Dropdown"
 
 import CriarUsuario from "../Usuario/CriarUsuario"
+import { useHistory } from "react-router-dom";
 
-const Dashboard = () => {
+const ListarUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
 
+  const history = useHistory();
+  
  //Modal state
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [modalEmail, setModalEmail] = useState();
+  const [modalId, setModalId] = useState();
+  const [modalNome, setModalNome] = useState();
+  // const [modalPassword, setModalPassword] = useState();
+  // const [modalPasswordConfirmation, setmodalPasswordConfirmation] = useState();
+  const [modalEndereco, setModalEndereco] = useState();
+  const [modalPerfil, setModalPerfil] = useState();
+
 
   //Model Usuário
   const [id, setId] = useState("");
@@ -42,11 +53,19 @@ const Dashboard = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleShowEdit = (usuario) => {
+    console.log(usuario)
     setShowEdit(true);
-    modalEditUser(usuario)
+    setModalEmail(usuario.email);
+    setModalNome(usuario.nome);
+    setModalId(usuario.id.$oid);
+    // setModalPassword(usuario.password);
+    // setmodalPasswordConfirmation(usuario.password_confirmation);
+    setModalEndereco(usuario.endereco);
+    // setModalPerfil(usuario.perfil);
+    // modalEditUser(usuario)
 
   }
-  const handleCloseEdit = () => setShowEdit(true);
+  const handleCloseEdit = () => setShowEdit(false);
 
 
   const getUsuarios = async () => {
@@ -77,7 +96,24 @@ const Dashboard = () => {
     }
   }
 
+<<<<<<< HEAD:src/components/DashboardUser/DashboardUser.jsx
   const updateUsuarios = async () => {
+=======
+  const handleModalEdit = () => {
+    let usuario = {
+      nome: modalNome,
+      email: modalEmail,
+      endereco: modalEndereco,
+      "$oid": modalId
+    }
+
+    updateApiUsuarios(usuario);
+    setShowEdit(false);
+    history.go(0)
+  }
+
+  const createUsuarios = async () => {
+>>>>>>> 1b5b89b90679d32d17b19234247a58ec9df07bd3:src/components/ListarUsuarios/ListarUsuarios.jsx
     handleClose()
     let user = new Usuario(id, email, password, password_confirmation, 
       nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
@@ -97,11 +133,80 @@ const Dashboard = () => {
     return () => {};
   }, []);
 
-  const modalEditUser = (usuario) => {
-    setShowEdit(true);
-    console.log(usuario)
-    return (
-      <>
+  // const modalEditUser = (usuario) => {
+  //   setShowEdit(true);
+  //   console.log(usuario)
+  //   return (
+      
+  //   )
+
+  // }
+
+
+
+  return (
+    <Container className="Container">
+      <h1 className="mt-5 titulo">Verifique aqui todos os usuários cadastrados</h1>
+      
+        <div className="div-conteudo">
+          <Button variant="primary" onClick={handleShow} className="mt-3 mr-4">
+            Registrar novo usuários
+          </Button>
+          <ButtonGroup vertical className="mt-3 mr-4">
+            <DropdownButton as={ButtonGroup} title="Listar usuários" id="bg-vertical-dropdown-1">
+            <Dropdown.Item eventKey="1">Por denúncia aberta</Dropdown.Item>
+            <Dropdown.Item eventKey="2">Por denúncia fechada</Dropdown.Item>
+            <Dropdown.Item eventKey="3">Por alguma outra coisa</Dropdown.Item>
+            </DropdownButton>
+          </ButtonGroup>
+
+          <Modal show={show} onHide={handleClose}>
+            <CriarUsuario getUsuarios={getUsuarios} handleClose={handleClose} usuarios={usuarios}></CriarUsuario>
+          </Modal>
+        </div>
+
+      <div className="div-conteudo">
+        <Table striped bordered hover className="mt-3">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Endereço</th>
+              <th>Perfil</th>
+              <th>Queixas</th>
+              {/* <th>Criado_em</th> */}
+              <th>Editar</th>
+              <th>Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+    
+            {usuarios && usuarios.map((usuario,idx)=> {
+              return(
+                <tr>
+                  <td>{idx+1}</td>
+                  <td>{usuario.nome}</td>
+                  <td>{usuario.email}</td>
+                  <td>{usuario.endereco}</td>
+                  <td>{usuario.perfil_id.$oid === "5fa1b6d84debe72ed41388ad" ? "Comum" : "Administrador"}</td>
+                  <td><Button size="sm">Visualizar</Button></td>
+                  {/* <td>{new Date(usuario.created_at).toUTCString()}</td> */}
+                  <td><Button size="sm" onClick={() => handleShowEdit(usuario)}>Editar</Button></td>
+                  {/* <td><Button size="sm" onClick={() => modalEditUser(usuario)}>Editar</Button></td> */}
+                  <td><Button size="sm" onClick={() => deleteUsuarios(usuario.id)}>Excluir</Button></td>
+                </tr>
+              )
+            })}
+          
+          </tbody>
+        </Table>
+      </div>
+    {/* </div> */}
+
+
+            {/* ///////////////////////////////////////////////////////////////////////// */}
+            <>
         <Modal show={showEdit} onHide={handleCloseEdit}>
           <Modal.Header closeButton>
             <Modal.Title>Atualize o usuário</Modal.Title>
@@ -112,7 +217,7 @@ const Dashboard = () => {
 
             <Form.Group controlId="formBasicEmail">
               <Form.Label>E-mail do usuário</Form.Label>
-              <Form.Control type="email" placeholder="name@example.com" value={usuario.email} onChange={(e) => setEmail(e.target.value)}/>
+              <Form.Control type="email" placeholder="name@example.com" value={modalEmail} onChange={(e) => setModalEmail(e.target.value)}/>
               {errorEmail && (
                 <div style={{
                   color: "rgb(168,104,109)",
@@ -129,12 +234,12 @@ const Dashboard = () => {
 
             <Form.Group>
               <Form.Label>Nome do usuário</Form.Label>
-              <Form.Control type="text" placeholder="Digite o nome do usuário" value={usuario.nome} onChange={(e) => setNome(e.target.value)}/>
+              <Form.Control type="text" placeholder="Digite o nome do usuário" value={modalNome} onChange={(e) => setModalNome(e.target.value)}/>
             </Form.Group>
 
-            <Form.Group>
+            {/* <Form.Group>
               <Form.Label>Senha</Form.Label>
-              <Form.Control type="password" placeholder="Senha" value={usuario.password} onChange={(e) => setPassword(e.target.value)}/>
+              <Form.Control type="password" placeholder="Senha" value={modalPassword} onChange={(e) => setModalPassword(e.target.value)}/>
               {errorPassword && (
                 <div style={{
                   color: "rgb(168,104,109)",
@@ -151,7 +256,7 @@ const Dashboard = () => {
 
             <Form.Group>
               <Form.Label>Confirme a senha</Form.Label>
-              <Form.Control type="password" placeholder="Repita a senha" value={usuario.password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)}/>
+              <Form.Control type="password" placeholder="Repita a senha" value={modalPasswordConfirmation} onChange={(e) => setmodalPasswordConfirmation(e.target.value)}/>
               {errorPassword && (
                 <div style={{
                   color: "rgb(168,104,109)",
@@ -164,20 +269,20 @@ const Dashboard = () => {
                   {errorPassword}
                 </div>
               )}
-            </Form.Group>
+            </Form.Group> */}
 
             <Form.Group  controlId="formGridAddress1">
               <Form.Label>Endereco</Form.Label>
-              <Form.Control type="text" placeholder="Endereço" value={usuario.endereco} onChange={(e) => setEndereco(e.target.value)}/>
+              <Form.Control type="text" placeholder="Endereço" value={modalEndereco} onChange={(e) => setModalEndereco(e.target.value)}/>
             </Form.Group>
 
-            <Form.Group controlId="exampleForm.SelectCustom">
+            {/* <Form.Group controlId="exampleForm.SelectCustom">
               <Form.Label>Perfil</Form.Label>
-              <Form.Control as="select" onChange={(e) => setPerfil_id(e.target.value)}>
+              <Form.Control value={modalPerfil} as="select" onChange={(e) => setModalPerfil(e.target.value)}>
                 <option value="5fa1b6d84debe72ed41388ad">Comum</option>
                 <option value="5fa1b6b64debe72ed41388ac">Admin</option>
               </Form.Control>
-            </Form.Group>
+            </Form.Group> */}
 
           </Form>
           </Modal.Body>
@@ -186,12 +291,13 @@ const Dashboard = () => {
             <Button variant="secondary" onClick={handleCloseEdit}>
               Cancelar
             </Button>
-            <Button variant="primary" onClick={validaDados}>
-              Registrar
+            <Button variant="primary" onClick={handleModalEdit}>
+              Atualizar
             </Button>
           </Modal.Footer>
         </Modal>
       </>
+<<<<<<< HEAD:src/components/DashboardUser/DashboardUser.jsx
     )
 
   }
@@ -259,8 +365,10 @@ const Dashboard = () => {
       </div>
     {/* </div> */}
 
+=======
+>>>>>>> 1b5b89b90679d32d17b19234247a58ec9df07bd3:src/components/ListarUsuarios/ListarUsuarios.jsx
     </Container>
   );
 };
 
-export default Dashboard;
+export default ListarUsuarios;
