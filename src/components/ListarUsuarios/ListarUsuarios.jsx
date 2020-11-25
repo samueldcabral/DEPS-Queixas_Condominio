@@ -92,13 +92,10 @@ const ListarUsuarios = () => {
     if(password !== password_confirmation){
       setErrorPassword("As senhas estão diferentes!")
     }else if (password === password_confirmation && status == true){
-      updateUsuarios()
+      createUsuarios()
     }
   }
 
-<<<<<<< HEAD:src/components/DashboardUser/DashboardUser.jsx
-  const updateUsuarios = async () => {
-=======
   const handleModalEdit = () => {
     let usuario = {
       nome: modalNome,
@@ -113,7 +110,6 @@ const ListarUsuarios = () => {
   }
 
   const createUsuarios = async () => {
->>>>>>> 1b5b89b90679d32d17b19234247a58ec9df07bd3:src/components/ListarUsuarios/ListarUsuarios.jsx
     handleClose()
     let user = new Usuario(id, email, password, password_confirmation, 
       nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
@@ -297,76 +293,6 @@ const ListarUsuarios = () => {
           </Modal.Footer>
         </Modal>
       </>
-<<<<<<< HEAD:src/components/DashboardUser/DashboardUser.jsx
-    )
-
-  }
-
-
-
-  return (
-    <Container className="Container">
-      <h1 className="mt-5 titulo">Verifique aqui todos os usuários cadastrados</h1>
-      
-        <div className="div-conteudo">
-          <Button variant="primary" onClick={handleShow} className="mt-3 mr-4">
-            Registrar novo usuários
-          </Button>
-          <ButtonGroup vertical className="mt-3 mr-4">
-            <DropdownButton as={ButtonGroup} title="Listar usuários" id="bg-vertical-dropdown-1">
-            <Dropdown.Item eventKey="1">Por denúncia aberta</Dropdown.Item>
-            <Dropdown.Item eventKey="2">Por denúncia fechada</Dropdown.Item>
-            <Dropdown.Item eventKey="3">Por alguma outra coisa</Dropdown.Item>
-            </DropdownButton>
-          </ButtonGroup>
-
-          <Modal show={show} onHide={handleClose}>
-            <CriarUsuario getUsuarios={getUsuarios} handleClose={handleClose} usuarios={usuarios}></CriarUsuario>
-          </Modal>
-        </div>
-
-      <div className="div-conteudo">
-        <Table striped bordered hover className="mt-3">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nome</th>
-              <th>E-mail</th>
-              <th>Endereço</th>
-              <th>Perfil</th>
-              <th>Queixas</th>
-              {/* <th>Criado_em</th> */}
-              <th>Editar</th>
-              <th>Editar2</th>
-              <th>Excluir</th>
-            </tr>
-          </thead>
-          <tbody>
-    
-            {usuarios && usuarios.map((usuario,idx)=> {
-              return(
-                <tr>
-                  <td>{idx+1}</td>
-                  <td>{usuario.nome}</td>
-                  <td>{usuario.email}</td>
-                  <td>{usuario.endereco}</td>
-                  <td>{usuario.perfil_id.$oid === "5fa1b6d84debe72ed41388ad" ? "Comum" : "Administrador"}</td>
-                  <td><Button size="sm">Visualizar</Button></td>
-                  {/* <td>{new Date(usuario.created_at).toUTCString()}</td> */}
-                  <td><Button size="sm" onClick={() => handleShowEdit(usuario)}>Editar</Button></td>
-                  <td><Button size="sm" onClick={() => modalEditUser(usuario)}>Editar</Button></td>
-                  <td><Button size="sm" onClick={() => deleteUsuarios(usuario.id)}>Excluir</Button></td>
-                </tr>
-              )
-            })}
-          
-          </tbody>
-        </Table>
-      </div>
-    {/* </div> */}
-
-=======
->>>>>>> 1b5b89b90679d32d17b19234247a58ec9df07bd3:src/components/ListarUsuarios/ListarUsuarios.jsx
     </Container>
   );
 };
