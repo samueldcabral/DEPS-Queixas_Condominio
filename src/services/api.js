@@ -83,6 +83,21 @@ export async function deleteApiQueixas(queixa) {
     queixa,
   });
 }
+
+export async function editarApiStatusQueixa(status_id, queixa) {
+  console.log(status_id)
+  console.log(queixa.criado_por)
+  return await api.put("/queixas/"+queixa._id.$oid, 
+  {
+    "status_id": status_id,
+    "privacidade": queixa.privacidade,
+    "descricao": queixa.descricao,
+    "titulo": queixa.titulo,
+    "gravidade": queixa.gravidade,
+    "tipo": queixa.tipo,
+    "criado_por": queixa.criado_por
+  });
+}
 //comentarios
 export async function createApiComentarios(descricao, queixaId, userId) {
   return await api.post("/comentarios", 

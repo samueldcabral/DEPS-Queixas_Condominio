@@ -24,7 +24,7 @@ const CriarQueixa = (props) => {
   const [privada, setPrivada] = useState(false);
   const [descricao, setDescricao] = useState("");
   const [gravidade, setGravidade] = useState("");
-  const [status_id, setStatus_id] = useState("");
+  const [status_id, setStatus_id] = useState("5fa1bae73ca57304b0fe6f90");
   const [tipo, setTipo] = useState("");
   const [criado_por, setCriado_por] = useState("");
   const [usuarios_ids, setUsuarios_id] = useState([]);
@@ -46,7 +46,7 @@ const CriarQueixa = (props) => {
 
   const createQueixas = async ({handleClose, getQueixas}) => {
     handleClose();
-    await createApiQueixas(status_id, privada, descricao, titulo, gravidade, tipo, user._id.$oid);
+    await createApiQueixas(status_id, privada, descricao, titulo, gravidade, tipo, localStorage.getItem("userId"));
     getQueixas();
   }
 
@@ -104,20 +104,6 @@ const CriarQueixa = (props) => {
             <Form.Group controlId="formBasicCheckbox">
               <Form.Check type="checkbox" label="É denúncia privada?" checked={privada} onChange={(e) => setPrivada(e.target.checked)}/>
             </Form.Group>
-
-            {/* Isso só aparece se o usuário logado for admin, se não, o padrão é pendente */}
-            {/* Onde perfil_id vai ser o usuário que vem no contexto */}
-            {/* { perfil_id == "Admin" (          */}
-              <Form.Group controlId="exampleForm.SelectCustom">
-                <Form.Label>Status</Form.Label>
-                  <Form.Control as="select" onChange={(e) => setStatus_id(e.target.value)}>
-                    <option value="5fa1ba373ca57304b0fe6f8c">Aberto</option>
-                    <option value="5fa1ba423ca57304b0fe6f8e">Fechado</option>
-                    <option value="5fa1bae73ca57304b0fe6f90">Pendente</option>
-                </Form.Control>
-              </Form.Group>
-            {/* )} */}
-
           </Form>
 
           </Modal.Body>
