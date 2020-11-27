@@ -129,17 +129,6 @@ const ListarUsuarios = () => {
     return () => {};
   }, []);
 
-  // const modalEditUser = (usuario) => {
-  //   setShowEdit(true);
-  //   console.log(usuario)
-  //   return (
-      
-  //   )
-
-  // }
-
-
-
   return (
     <Container className="Container">
       <h1 className="mt-5 titulo">Verifique aqui todos os usuários cadastrados</h1>

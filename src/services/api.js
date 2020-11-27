@@ -85,8 +85,6 @@ export async function deleteApiQueixas(queixa) {
 }
 
 export async function editarApiStatusQueixa(status_id, queixa) {
-  console.log(status_id)
-  console.log(queixa.criado_por)
   return await api.put("/queixas/"+queixa._id.$oid, 
   {
     "status_id": status_id,

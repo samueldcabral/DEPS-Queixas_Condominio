@@ -48,8 +48,6 @@ const VisualizarQueixa = () => {
     }
   }, [queixaId])
 
-  console.dir(queixa)
-
   const getComentarios = useCallback(async () => {
     let result = await getApiComentarios(queixaId);
 
