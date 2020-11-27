@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import "./VisualizarQueixa.css";
 
-import { getApiQueixa, getApiComentarios, getApiUsuarios, createApiComentarios } from "../../services/api";
+import { getApiQueixa, getApiComentarios, getApiUsuarios, createApiComentarios, editarApiStatusQueixa } from "../../services/api";
 import Container from "react-bootstrap/Container"
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
@@ -23,6 +23,7 @@ const VisualizarQueixa = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [novoComentario, setNovoComentario] = useState("");
+  const [status_id, setStatus_id] = useState("");
   const { user } = useContext(QueixaContext);
 
 
@@ -89,6 +90,13 @@ const VisualizarQueixa = () => {
     )
   }
 
+  const editarStatusQueixa = async () => {
+    if (status_id !== "") {
+      await editarApiStatusQueixa(status_id, queixa);
+      getQueixa();
+    }
+  }
+
   useEffect(() => {
     (async () => {
       await getUsuarios();
@@ -109,16 +117,34 @@ const VisualizarQueixa = () => {
       {!loading && queixa !== null &&
         <div style={{ display: "flex", flex: "100%", flexWrap: "wrap", width: "80%", margin: "auto", height: "90vh" }}>
           <Card style={{ display: "flex", flex: "100%", flexWrap: "wrap", width: "80%", margin: "auto", minHeight: "30vh" }}>
-            <Card.Body>
+            <Card.Body style={{ display: "flex", flex: "100%", flexWrap: "wrap", justifyContent: "space-around"}}>
+              <div>
               <Card.Title><h1>{queixa.titulo}</h1></Card.Title>
               {
                 filtrarUsuarioPorQueixa(queixa)
               }
-              <Card.Text style={{ display: "flex", flex: "100%", flexDirection: "column" }}>
+              <Card.Text style={{ display: "flex", flex: "100%", flexWrap: "wrap", margin: "auto"}}>
                 <span>Tipo: {queixa.tipo}</span>
                 <span>Gravidade: {queixa.gravidade}</span>
                 <span>Descrição: <b>{queixa.descricao}</b></span>
               </Card.Text>
+              </div>
+              {localStorage.getItem("userPerfil") === "admin" &&
+              <div>
+                <Form>
+                  <Form.Group controlId="exampleForm.SelectCustom">
+                    <Form.Label>Status</Form.Label>
+                      <Form.Control as="select" onChange={(e) => setStatus_id(e.target.value)}>
+                        <option value="">Escolha a opção</option>
+                        <option value="5fa1ba373ca57304b0fe6f8c">Aberto</option>
+                        <option value="5fa1ba423ca57304b0fe6f8e">Fechado</option>
+                        <option value="5fbd59043ca5732d6c6370ae">Em espera</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Form>
+                  <Button variant="primary" onClick={editarStatusQueixa}>Alterar Status</Button>
+              </div>
+              }
             </Card.Body>
           </Card>
 
