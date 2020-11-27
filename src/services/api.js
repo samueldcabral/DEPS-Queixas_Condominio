@@ -1,7 +1,10 @@
 import axios from "axios";
 
+// https://queixas.herokuapp.com/
+
 const api = axios.create({
-  baseURL: `http://localhost:3000`,
+  baseURL: `https://queixas.herokuapp.com/`,
+  // baseURL: `http://localhost:3000`,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
