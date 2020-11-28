@@ -28,10 +28,6 @@ const VisualizarQueixa = () => {
 
 
   const getQueixa = useCallback(async () => {
-    try {
-      setError("");
-      setLoading(true);
-
       const result = await getApiQueixa(queixaId);
 
       const { criado_por, created_at, descricao, gravidade, privacidade, status_id,
@@ -41,11 +37,6 @@ const VisualizarQueixa = () => {
         privacidade, descricao, titulo, gravidade, tipo, criado_por);
 
       setQueixa(queixaCriada);
-    } catch (erro) {
-      setError("Algo deu errado");
-    } finally {
-      setLoading(false);
-    }
   }, [queixaId])
 
   const getComentarios = useCallback(async () => {
@@ -99,9 +90,18 @@ const VisualizarQueixa = () => {
 
   useEffect(() => {
     (async () => {
+      try {
+        setError("");
+        setLoading(true);
+  
       await getUsuarios();
       await getQueixa();
       await getComentarios();
+    } catch (erro) {
+      setError("Algo deu errado");
+    } finally {
+      setLoading(false);
+    }
     })()
 
     return () => { };
