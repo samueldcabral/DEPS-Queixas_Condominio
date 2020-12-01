@@ -60,31 +60,6 @@ const ListarQueixas = () => {
   // const [errorTitulo, setErrorTitulo] = useState("");
 
   const getDadosApi = async () => {
-<<<<<<< HEAD
-    let result = await getApiUsuarios();
-    let resultArr = result.data.map((element) => {
-      let {id, email, password, password_confirmation, 
-        nome, endereco, perfil_id, queixa_ids, created_at, updated_at} = element;
-      
-      return new Usuario(id, email, password, password_confirmation, 
-        nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
-    })
-    setUsuarios(resultArr);
-
-    let result2 = await getApiQueixas();
-    let resultArr2 = result2.data.map((element) => {
-      let {_id, created_at, updated_at, usuarios_ids, status_id,
-        privacidade, descricao, titulo, gravidade, tipo, criado_por} = element;
-      
-      return new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
-        privacidade, descricao, titulo, gravidade, tipo, criado_por);
-    })
-    setQueixas(resultArr2);
-
-    getUsuarios();
-    console.log(usuarios)
-  } 
-=======
     try {
       setError("");
       setLoading(true);
@@ -102,10 +77,10 @@ const ListarQueixas = () => {
       let result2 = await getApiQueixas();
       let resultArr2 = result2.data.map((element) => {
         let { _id, created_at, updated_at, usuarios_ids, status_id,
-          privada, descricao, titulo, gravidade, tipo, criado_por } = element;
+          privacidade, descricao, titulo, gravidade, tipo, criado_por } = element;
 
         return new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
-          privada, descricao, titulo, gravidade, tipo, criado_por);
+          privacidade, descricao, titulo, gravidade, tipo, criado_por);
       })
       setQueixas(resultArr2);
 
@@ -116,7 +91,6 @@ const ListarQueixas = () => {
       setLoading(false);
     }
   }
->>>>>>> a833ef03b9223dbc79235b6558ecdb49925eb640
 
   const getUsuarios = async () => {
     let result = await getApiUsuarios();
