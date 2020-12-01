@@ -210,15 +210,9 @@ const ListarQueixas = () => {
                 queixas && queixas.map((queixa, idx) => {
 
                   const userName = usuarios.find((user) => user.id.$oid === queixa.criado_por)
-<<<<<<< HEAD
-                  return(
-                    <tr>
-                      <td>{idx+1}</td>
-=======
                   return (
                     <tr key={queixa._id.$oid}>
                       <td>{idx + 1}</td>
->>>>>>> a833ef03b9223dbc79235b6558ecdb49925eb640
                       <td>{queixa.titulo}</td>
                       <td>{queixa.descricao}</td>
                       <td>{queixa.tipo}</td>
@@ -226,12 +220,7 @@ const ListarQueixas = () => {
                       <td>{queixa.privacidade ? "Sim" : "Não"}</td>
                       <td>{new Date(queixa.created_at).toUTCString()}</td>
                       <td>{userName.nome}</td>
-<<<<<<< HEAD
                       <td><Button size="sm" onClick={() => history.push("/queixa/"+queixa._id.$oid)}>Vizualizar</Button></td>
-=======
-
-                      <td><Button size="sm" onClick={() => history.push("/queixa/" + queixa._id.$oid)}>Vizualizar</Button></td>
->>>>>>> a833ef03b9223dbc79235b6558ecdb49925eb640
                       <td><Button size="sm">Editar</Button></td>
                       <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
                     </tr>
