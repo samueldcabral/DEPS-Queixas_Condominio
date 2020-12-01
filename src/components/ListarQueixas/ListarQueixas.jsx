@@ -71,10 +71,10 @@ const ListarQueixas = () => {
     let result2 = await getApiQueixas();
     let resultArr2 = result2.data.map((element) => {
       let {_id, created_at, updated_at, usuarios_ids, status_id,
-        privada, descricao, titulo, gravidade, tipo, criado_por} = element;
+        privacidade, descricao, titulo, gravidade, tipo, criado_por} = element;
       
       return new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
-        privada, descricao, titulo, gravidade, tipo, criado_por);
+        privacidade, descricao, titulo, gravidade, tipo, criado_por);
     })
     setQueixas(resultArr2);
 
@@ -182,7 +182,6 @@ const ListarQueixas = () => {
               queixas && queixas.map((queixa,idx)=> {
 
                   const userName = usuarios.find((user) => user.id.$oid === queixa.criado_por)
-                  console.log(queixas)
                   return(
                     <tr>
                       <td>{idx+1}</td>
@@ -192,9 +191,7 @@ const ListarQueixas = () => {
                       <td>{queixa.gravidade}</td>
                       <td>{queixa.privacidade ? "Sim" : "Não"}</td>
                       <td>{new Date(queixa.created_at).toUTCString()}</td>
-
                       <td>{userName.nome}</td>
-
                       <td><Button size="sm" onClick={() => history.push("/queixa/"+queixa._id.$oid)}>Vizualizar</Button></td>
                       <td><Button size="sm">Editar</Button></td>
                       <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
