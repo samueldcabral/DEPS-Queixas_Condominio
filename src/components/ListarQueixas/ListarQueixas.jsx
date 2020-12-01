@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./ListarQueixas.css";
-import {QueixaContext} from "../../store/queixa";
+import { QueixaContext } from "../../store/queixa";
 
 import { useHistory } from "react-router-dom";
 
-import {getApiQueixas, deleteApiQueixas, getApiUsuarios, createApiQueixas} from "../../services/api";
+import { getApiQueixas, deleteApiQueixas, getApiUsuarios, createApiQueixas } from "../../services/api";
 import Queixa from "../../models/Queixa";
 import Usuario from "../../models/Usuario";
 
@@ -25,7 +25,7 @@ const ListarQueixas = () => {
   const [show, setShow] = useState(false); //Modal state
   const history = useHistory();
 
-  const {user} = useContext(QueixaContext);
+  const { user } = useContext(QueixaContext);
 
   // //Model Queixa
   // const [_id, set_Id] = useState("");
@@ -50,6 +50,8 @@ const ListarQueixas = () => {
   const [queixa_ids, setQueixa_ids] = useState([]);
   const [created_at, setCreated_at] = useState("");
   const [updated_at, setUpdated_at] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   //Modal functions
   const handleClose = () => setShow(false);
@@ -58,6 +60,7 @@ const ListarQueixas = () => {
   // const [errorTitulo, setErrorTitulo] = useState("");
 
   const getDadosApi = async () => {
+<<<<<<< HEAD
     let result = await getApiUsuarios();
     let resultArr = result.data.map((element) => {
       let {id, email, password, password_confirmation, 
@@ -81,49 +84,72 @@ const ListarQueixas = () => {
     getUsuarios();
     console.log(usuarios)
   } 
+=======
+    try {
+      setError("");
+      setLoading(true);
+      let result = await getApiUsuarios();
+      let resultArr = result.data.map((element) => {
+        let { id, email, password, password_confirmation,
+          nome, endereco, perfil_id, queixa_ids, created_at, updated_at } = element;
+
+        return new Usuario(id, email, password, password_confirmation,
+          nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
+      })
+      setUsuarios(resultArr);
+
+
+      let result2 = await getApiQueixas();
+      let resultArr2 = result2.data.map((element) => {
+        let { _id, created_at, updated_at, usuarios_ids, status_id,
+          privada, descricao, titulo, gravidade, tipo, criado_por } = element;
+
+        return new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
+          privada, descricao, titulo, gravidade, tipo, criado_por);
+      })
+      setQueixas(resultArr2);
+
+      getUsuarios();
+    } catch (erro) {
+      setError("Algo deu errado");
+    } finally {
+      setLoading(false);
+    }
+  }
+>>>>>>> a833ef03b9223dbc79235b6558ecdb49925eb640
 
   const getUsuarios = async () => {
     let result = await getApiUsuarios();
     let resultArr = result.data.map((element) => {
-      let {id, email, nome, endereco, perfil_id, queixa_ids,
-        created_at, updated_at} = element;
-      
-      return new Usuario(id, email, password, password_confirmation, 
+      let { id, email, nome, endereco, perfil_id, queixa_ids,
+        created_at, updated_at } = element;
+
+      return new Usuario(id, email, password, password_confirmation,
         nome, endereco, perfil_id, queixa_ids, created_at, updated_at);
     })
     setUsuarios(resultArr);
   }
 
   const getQueixas = async () => {
-    let result = await getApiQueixas();
-    let resultArr = result.data.map((element) => {
-      let {_id, created_at, updated_at, usuarios_ids, status_id,
-        privada, descricao, titulo, gravidade, tipo, criado_por} = element;
-      
-      return new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
-        privada, descricao, titulo, gravidade, tipo, criado_por);
-    })
-    setQueixas(resultArr);
+    try {
+      setError("");
+      setLoading(true);
+
+      let result = await getApiQueixas();
+      let resultArr = result.data.map((element) => {
+        let { _id, created_at, updated_at, usuarios_ids, status_id,
+          privada, descricao, titulo, gravidade, tipo, criado_por } = element;
+
+        return new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
+          privada, descricao, titulo, gravidade, tipo, criado_por);
+      })
+      setQueixas(resultArr);
+    } catch (erro) {
+      setError("Algo deu errado");
+    } finally {
+      setLoading(false);
+    }
   }
-
-  // const validaDados = () => {
-  //   queixas.map((queixa)=> {
-  //     if (queixa.titulo === titulo){
-  //       setErrorTitulo("Título já cadastrado!")
-  //     }else{
-  //       createQueixas()
-  //     }
-  //   })
-  // }
-
-  // const createQueixas = async () => {
-  //   handleClose()
-  //   let queixa = new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
-  //     privada, descricao, titulo, gravidade, tipo, user._id.$oid);
-  //     console.log(queixa)
-  //   await createApiQueixas(queixa);
-  //   getQueixas();
-  // }
 
   const deleteQueixas = async (queixaID) => {
     await deleteApiQueixas(queixaID);
@@ -134,7 +160,7 @@ const ListarQueixas = () => {
 
     getDadosApi();
 
-    return () => {};
+    return () => { };
   }, []);
 
   return (
@@ -147,44 +173,52 @@ const ListarQueixas = () => {
           Registrar nova denúncia
         </Button>
         <ButtonGroup vertical className="mt-3 mr-4">
-              <DropdownButton as={ButtonGroup} title="Listar denúncias" id="bg-vertical-dropdown-1">
-              <Dropdown.Item eventKey="1">Por denúncia aberta</Dropdown.Item>
-              <Dropdown.Item eventKey="2">Por denúncia fechada</Dropdown.Item>
-              <Dropdown.Item eventKey="3">Por gravidade leve</Dropdown.Item>
-              </DropdownButton>
+          <DropdownButton as={ButtonGroup} title="Listar denúncias" id="bg-vertical-dropdown-1">
+            <Dropdown.Item eventKey="1">Por denúncia aberta</Dropdown.Item>
+            <Dropdown.Item eventKey="2">Por denúncia fechada</Dropdown.Item>
+            <Dropdown.Item eventKey="3">Por gravidade leve</Dropdown.Item>
+          </DropdownButton>
         </ButtonGroup>
 
         <Modal show={show} onHide={handleClose}>
-        {/* componente modal */}
-        <CriarQueixa getQueixas={getQueixas} handleClose={handleClose} queixas={queixas}></CriarQueixa>
+          {/* componente modal */}
+          <CriarQueixa getQueixas={getQueixas} handleClose={handleClose} queixas={queixas}></CriarQueixa>
         </Modal>
       </div>
 
       <div className="div-conteudo">
-        <Table striped bordered hover className="mt-3">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Titulo</th>
-              <th>Descrição</th>
-              <th>Tipo</th>
-              <th>Gravidade</th>
-              <th>Privado?</th>
-              <th>Criado_em</th>
-              <th>Criado_por</th>
-              <th>Abrir</th>
-              <th>Editar</th>
-              <th>Excluir</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              queixas && queixas.map((queixa,idx)=> {
+        {error !== "" && <h4 style={{ color: "red" }}>Erro: {error}</h4>}
+        {!loading && queixas !== [] &&
+          <Table striped bordered hover className="mt-3">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Titulo</th>
+                <th>Descrição</th>
+                <th>Tipo</th>
+                <th>Gravidade</th>
+                <th>Privado?</th>
+                <th>Criado_em</th>
+                <th>Criado_por</th>
+                <th>Abrir</th>
+                <th>Editar</th>
+                <th>Excluir</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                queixas && queixas.map((queixa, idx) => {
 
                   const userName = usuarios.find((user) => user.id.$oid === queixa.criado_por)
+<<<<<<< HEAD
                   return(
                     <tr>
                       <td>{idx+1}</td>
+=======
+                  return (
+                    <tr key={queixa._id.$oid}>
+                      <td>{idx + 1}</td>
+>>>>>>> a833ef03b9223dbc79235b6558ecdb49925eb640
                       <td>{queixa.titulo}</td>
                       <td>{queixa.descricao}</td>
                       <td>{queixa.tipo}</td>
@@ -192,16 +226,23 @@ const ListarQueixas = () => {
                       <td>{queixa.privacidade ? "Sim" : "Não"}</td>
                       <td>{new Date(queixa.created_at).toUTCString()}</td>
                       <td>{userName.nome}</td>
+<<<<<<< HEAD
                       <td><Button size="sm" onClick={() => history.push("/queixa/"+queixa._id.$oid)}>Vizualizar</Button></td>
+=======
+
+                      <td><Button size="sm" onClick={() => history.push("/queixa/" + queixa._id.$oid)}>Vizualizar</Button></td>
+>>>>>>> a833ef03b9223dbc79235b6558ecdb49925eb640
                       <td><Button size="sm">Editar</Button></td>
                       <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
                     </tr>
                   )
 
-              })
-            }
-          </tbody>
-        </Table>
+                })
+              }
+            </tbody>
+          </Table>
+        }
+        {loading && <h1>Carregando...</h1>}
       </div>
 
     </Container>

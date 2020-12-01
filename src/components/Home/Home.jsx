@@ -88,8 +88,6 @@ const Home = () => {
     }
   }
 
-  console.log(user)
-
   return (
       <div style={{display: "flex", flex: "100%", width:"60%", margin: "auto", height: "90vh"}}>
 

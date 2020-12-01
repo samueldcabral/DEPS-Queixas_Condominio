@@ -1,7 +1,10 @@
 import axios from "axios";
 
+// https://queixas.herokuapp.com/
+
 const api = axios.create({
-  baseURL: `http://localhost:3000`,
+  baseURL: `https://queixas.herokuapp.com/`,
+  // baseURL: `http://localhost:3000`,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -81,6 +84,19 @@ export async function updateApiQueixas(queixa) {
 export async function deleteApiQueixas(queixa) {
   return await api.delete("/queixas/"+queixa.$oid, {
     queixa,
+  });
+}
+
+export async function editarApiStatusQueixa(status_id, queixa) {
+  return await api.put("/queixas/"+queixa._id.$oid, 
+  {
+    "status_id": status_id,
+    "privacidade": queixa.privacidade,
+    "descricao": queixa.descricao,
+    "titulo": queixa.titulo,
+    "gravidade": queixa.gravidade,
+    "tipo": queixa.tipo,
+    "criado_por": queixa.criado_por
   });
 }
 //comentarios
