@@ -74,7 +74,6 @@ const ListarQueixas = () => {
       })
       setUsuarios(resultArr);
 
-
       let result2 = await getApiQueixas();
       let resultArr2 = result2.data.map((element) => {
         let { _id, created_at, updated_at, usuarios_ids, status_id,
@@ -164,7 +163,7 @@ const ListarQueixas = () => {
 
       <div className="div-conteudo">
         {/* {queixas && <p>{JSON.stringify(queixas, null, '\t')}</p>} */}
-        <div style={{ display: "flex", flexWrap: "wrap", margin: "auto" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-evenly", margin: "auto" }}>
         <Button variant="primary" onClick={handleShow} className="mt-3 mr-4">
           Registrar nova denúncia
         </Button>
@@ -211,6 +210,7 @@ const ListarQueixas = () => {
                 <th>Tipo</th>
                 <th>Gravidade</th>
                 <th>Privado?</th>
+                <th>Status</th>
                 <th>Criado_em</th>
                 <th>Criado_por</th>
                 <th>Abrir</th>
@@ -231,11 +231,15 @@ const ListarQueixas = () => {
                       <td>{queixa.tipo}</td>
                       <td>{queixa.gravidade}</td>
                       <td>{queixa.privacidade ? "Sim" : "Não"}</td>
+                      <td>{queixa.status_id.$oid == '5fa1ba373ca57304b0fe6f8c' ? 'Aberta' 
+                      : queixa.status_id.$oid == '5fa1ba423ca57304b0fe6f8e' ? 'Fechada' 
+                      : queixa.status_id.$oid == '5fa1bae73ca57304b0fe6f90' ? 'Pendente para aprovação' 
+                      : queixa.status_id.$oid == '5fbd58d23ca5732d6c6370ac' ? 'Pendente para exclusão' 
+                      : queixa.status_id.$oid == '5fbd59043ca5732d6c6370ae' ? 'Em espera' 
+                      : 'Status inválido'}</td>
                       <td>{new Date(queixa.created_at).toUTCString()}</td>
-
                       <td>{userName.nome}</td>
-
-                      <td><Button size="sm" onClick={() => history.push("/queixa/" + queixa._id.$oid)}>Vizualizar</Button></td>
+                      <td><Button size="sm" onClick={() => history.push("/queixa/"+queixa._id.$oid)}>Vizualizar</Button></td>
                       <td><Button size="sm">Editar</Button></td>
                       <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
                     </tr>

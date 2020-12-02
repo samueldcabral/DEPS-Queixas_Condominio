@@ -17,7 +17,7 @@ const CriarUsuario = (props) => {
     const [password, setPassword] = useState("");
     const [password_confirmation, setPassword_confirmation] = useState("");
     const [endereco, setEndereco] = useState("");
-    const [perfil_id, setPerfil_id] = useState("");
+    const [perfil_id, setPerfil_id] = useState("5fa1b6d84debe72ed41388ad");
     const [queixa_ids, setQueixa_ids] = useState("");
     const [created_at, setCreated_at] = useState("");
     const [updated_at, setUpdated_at] = useState("");
@@ -124,7 +124,7 @@ const CriarUsuario = (props) => {
     
                     <Form.Group controlId="exampleForm.SelectCustom">
                         <Form.Label>Perfil</Form.Label>
-                        <Form.Control as="select" onChange={(e) => setPerfil_id(e.target.value)}>
+                        <Form.Control as="select" value={perfil_id} onChange={(e) => setPerfil_id(e.target.value)}>
                             <option value="5fa1b6d84debe72ed41388ad">Comum</option>
                             <option value="5fa1b6b64debe72ed41388ac">Admin</option>
                         </Form.Control>
