@@ -85,6 +85,7 @@ const VisualizarQueixa = () => {
     if (status_id !== "") {
       await editarApiStatusQueixa(status_id, queixa);
       getQueixa();
+      alert('Status da queixa alterado')
     }
   }
 
