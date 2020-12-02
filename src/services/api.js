@@ -3,8 +3,8 @@ import axios from "axios";
 // https://queixas.herokuapp.com/
 
 const api = axios.create({
-  baseURL: `https://queixas.herokuapp.com/`,
-  // baseURL: `http://localhost:3000`,
+  // baseURL: `https://queixas.herokuapp.com/`,
+  baseURL: `http://localhost:3000`,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -99,6 +99,13 @@ export async function editarApiStatusQueixa(status_id, queixa) {
     "criado_por": queixa.criado_por
   });
 }
+export async function getApiQueixasFindByPrivacidade(privacidade) {
+    return await api.get(`queixas/find_by_privacidade/${privacidade}`);
+}
+export async function getApiQueixasFindByStatusId(id) {
+    return await api.get(`queixas/find_by_status_id/${id}`);
+}
+
 //comentarios
 export async function createApiComentarios(descricao, queixaId, userId) {
   return await api.post("/comentarios", 

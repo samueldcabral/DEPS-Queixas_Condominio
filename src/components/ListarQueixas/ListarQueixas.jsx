@@ -4,7 +4,7 @@ import { QueixaContext } from "../../store/queixa";
 
 import { useHistory } from "react-router-dom";
 
-import { getApiQueixas, deleteApiQueixas, getApiUsuarios, createApiQueixas } from "../../services/api";
+import { getApiQueixas, deleteApiQueixas, getApiUsuarios, createApiQueixas, getApiQueixasFindByPrivacidade, getApiQueixasFindByStatusId } from "../../services/api";
 import Queixa from "../../models/Queixa";
 import Usuario from "../../models/Usuario";
 
@@ -52,6 +52,7 @@ const ListarQueixas = () => {
   const [updated_at, setUpdated_at] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [resultado_filtro, setResultadoFiltro] = useState("");
 
   //Modal functions
   const handleClose = () => setShow(false);
@@ -77,10 +78,10 @@ const ListarQueixas = () => {
       let result2 = await getApiQueixas();
       let resultArr2 = result2.data.map((element) => {
         let { _id, created_at, updated_at, usuarios_ids, status_id,
-          privada, descricao, titulo, gravidade, tipo, criado_por } = element;
+          privacidade, descricao, titulo, gravidade, tipo, criado_por } = element;
 
         return new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
-          privada, descricao, titulo, gravidade, tipo, criado_por);
+          privacidade, descricao, titulo, gravidade, tipo, criado_por);
       })
       setQueixas(resultArr2);
 
@@ -104,20 +105,40 @@ const ListarQueixas = () => {
     setUsuarios(resultArr);
   }
 
-  const getQueixas = async () => {
+  const setQueixasPorFiltro = (resultadoFiltroArr) => {
+    let resultArr = resultadoFiltroArr.data.map((element) => {
+      let { _id, created_at, updated_at, usuarios_ids, status_id,
+        privacidade, descricao, titulo, gravidade, tipo, criado_por } = element;
+
+      return new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
+        privacidade, descricao, titulo, gravidade, tipo, criado_por);
+    })
+    setQueixas(resultArr);
+  }
+
+  function checkStatus(filter) {
+    const status = {
+      publicas: () => getApiQueixasFindByPrivacidade(false),
+      privadas: () => getApiQueixasFindByPrivacidade(true),
+      aprovacao: () => getApiQueixasFindByStatusId("5fa1bae73ca57304b0fe6f90"),
+      abertas: () => getApiQueixasFindByStatusId("5fa1ba373ca57304b0fe6f8c"),
+      fechadas: () => getApiQueixasFindByStatusId("5fa1ba423ca57304b0fe6f8e"),
+      espera: () => getApiQueixasFindByStatusId("5fbd59043ca5732d6c6370ae"),
+      exclusao: () => getApiQueixasFindByStatusId("5fbd58d23ca5732d6c6370ac")
+    };
+  
+    return status[filter]();
+  }
+
+  const getQueixas = async (filtro) => {
     try {
       setError("");
       setLoading(true);
 
-      let result = await getApiQueixas();
-      let resultArr = result.data.map((element) => {
-        let { _id, created_at, updated_at, usuarios_ids, status_id,
-          privada, descricao, titulo, gravidade, tipo, criado_por } = element;
+      if (!filtro) return setQueixasPorFiltro(await getApiQueixas());
 
-        return new Queixa(_id, created_at, updated_at, usuarios_ids, status_id,
-          privada, descricao, titulo, gravidade, tipo, criado_por);
-      })
-      setQueixas(resultArr);
+      return setQueixasPorFiltro(await checkStatus(filtro));
+
     } catch (erro) {
       setError("Algo deu errado");
     } finally {
@@ -143,16 +164,34 @@ const ListarQueixas = () => {
 
       <div className="div-conteudo">
         {/* {queixas && <p>{JSON.stringify(queixas, null, '\t')}</p>} */}
+        <div style={{ display: "flex", flexWrap: "wrap", margin: "auto" }}>
         <Button variant="primary" onClick={handleShow} className="mt-3 mr-4">
           Registrar nova denúncia
         </Button>
-        <ButtonGroup vertical className="mt-3 mr-4">
-          <DropdownButton as={ButtonGroup} title="Listar denúncias" id="bg-vertical-dropdown-1">
-            <Dropdown.Item eventKey="1">Por denúncia aberta</Dropdown.Item>
-            <Dropdown.Item eventKey="2">Por denúncia fechada</Dropdown.Item>
-            <Dropdown.Item eventKey="3">Por gravidade leve</Dropdown.Item>
-          </DropdownButton>
-        </ButtonGroup>
+        <Form>
+          <Form.Group controlId="exampleForm.SelectCustom">
+            <Form.Label>Filtrar por Privacidade</Form.Label>
+              <Form.Control as="select" onChange={(e) => getQueixas(e.target.value)}>
+                <option value="">Escolha a opção</option>
+                <option value="privadas">Privadas</option>
+                <option value="publicas">Públicas</option>
+            </Form.Control>
+          </Form.Group>
+        </Form>
+        <Form>
+          <Form.Group controlId="exampleForm.SelectCustom">
+            <Form.Label>Filtrar por Status</Form.Label>
+              <Form.Control as="select" onChange={(e) => getQueixas(e.target.value)}>
+                <option value="">Escolha a opção</option>
+                <option value="aprovacao">Pendente para Aprovação</option>
+                <option value="abertas">Abertas</option>
+                <option value="fechadas">Fechadas</option>
+                <option value="espera">Em Espera</option>
+                <option value="exclusao">Pendente parar Exclusão</option>
+            </Form.Control>
+          </Form.Group>
+        </Form>
+        </div>
 
         <Modal show={show} onHide={handleClose}>
           {/* componente modal */}
