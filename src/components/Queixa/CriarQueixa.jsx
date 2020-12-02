@@ -86,6 +86,7 @@ const CriarQueixa = (props) => {
             <Form.Group controlId="exampleForm.SelectCustom">
                 <Form.Label>Gravidade</Form.Label>
                 <Form.Control as="select" onChange={(e) => setGravidade(e.target.value)}>
+                  <option value="">Escolha a gravidade</option>
                   <option value="Leve">Leve</option>
                   <option value="Moderada">Moderada</option>
                   <option value="Grave">Grave</option>
