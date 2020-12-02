@@ -53,7 +53,7 @@ const VisualizarQueixa = () => {
 
   const createComentarios = async () => {
     if (novoComentario !== "") {
-      await createApiComentarios(novoComentario, queixaId, user._id.$oid);
+      await createApiComentarios(novoComentario, queixaId, user.id.$oid);
       getComentarios();
       setNovoComentario("")
     }
@@ -117,16 +117,17 @@ const VisualizarQueixa = () => {
       {!loading && queixa !== null &&
         <div style={{ display: "flex", flex: "100%", flexWrap: "wrap", width: "80%", margin: "auto", height: "90vh" }}>
           <Card style={{ display: "flex", flex: "100%", flexWrap: "wrap", width: "80%", margin: "auto", minHeight: "30vh" }}>
-            <Card.Body style={{ display: "flex", flex: "100%", flexWrap: "wrap", justifyContent: "space-around"}}>
+            <Card.Body style={{ display: "flex", flex: "100%", flexWrap: "wrap", justifyContent: "space-between"}}>
               <div>
               <Card.Title><h1>{queixa.titulo}</h1></Card.Title>
               {
                 filtrarUsuarioPorQueixa(queixa)
               }
-              <Card.Text style={{ display: "flex", flex: "100%", flexWrap: "wrap", margin: "auto"}}>
+              <Card.Text style={{ display: "flex", flex: "100%", flexWrap: "wrap", flexDirection: "column", margin: "auto"}}>
                 <span>Tipo: {queixa.tipo}</span>
                 <span>Gravidade: {queixa.gravidade}</span>
                 <span>Descrição: <b>{queixa.descricao}</b></span>
+                <span>Status ID: <b>{queixa.status_id.$oid}</b></span>
               </Card.Text>
               </div>
               {localStorage.getItem("userPerfil") === "admin" &&
@@ -134,7 +135,7 @@ const VisualizarQueixa = () => {
                 <Form>
                   <Form.Group controlId="exampleForm.SelectCustom">
                     <Form.Label>Status</Form.Label>
-                      <Form.Control as="select" onChange={(e) => setStatus_id(e.target.value)}>
+                      <Form.Control as="select" onChange={(e) => {setStatus_id(e.target.value)}}>
                         <option value="">Escolha a opção</option>
                         <option value="5fa1ba373ca57304b0fe6f8c">Aberto</option>
                         <option value="5fa1ba423ca57304b0fe6f8e">Fechado</option>
