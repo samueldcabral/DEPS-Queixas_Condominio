@@ -96,7 +96,7 @@ const CriarQueixa = (props) => {
             <Form.Group controlId="exampleForm.SelectCustom">
                 <Form.Label>Tipo</Form.Label>
                 <Form.Control as="select" onChange={(e) => setTipo(e.target.value)}>
-                  <option value="">Escolha o tipo</option> {/* FAZER VALIDAÇÃO PARA QUANDO NÃO FOR ESCOLHIDO ex visualizar queixa*/}
+                  <option value="">Escolha o tipo</option>
                   <option value="Homicidio">Homicídio</option>
                   <option value="Roubo">Roubo</option>
                   <option value="Furto">Furto</option>
