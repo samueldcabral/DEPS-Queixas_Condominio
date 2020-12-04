@@ -128,7 +128,12 @@ const VisualizarQueixa = () => {
                 <span>Tipo: {queixa.tipo}</span>
                 <span>Gravidade: {queixa.gravidade}</span>
                 <span>Descrição: <b>{queixa.descricao}</b></span>
-                <span>Status ID: <b>{queixa.status_id.$oid}</b></span>
+                <span>Status ID: <b>{queixa.status_id.$oid == '5fa1ba373ca57304b0fe6f8c' ? 'Aberta' 
+                      : queixa.status_id.$oid == '5fa1ba423ca57304b0fe6f8e' ? 'Fechada' 
+                      : queixa.status_id.$oid == '5fa1bae73ca57304b0fe6f90' ? 'Pendente para aprovação' 
+                      : queixa.status_id.$oid == '5fbd58d23ca5732d6c6370ac' ? 'Pendente para exclusão' 
+                      : queixa.status_id.$oid == '5fbd59043ca5732d6c6370ae' ? 'Em espera' 
+                      : 'Status inválido'}</b></span>
               </Card.Text>
               </div>
               {localStorage.getItem("userPerfil") === "admin" &&
