@@ -148,13 +148,6 @@ const ListarUsuarios = () => {
         <Button variant="primary" onClick={handleShow} className="mt-3 mr-4">
           Registrar novo usuários
           </Button>
-        <ButtonGroup vertical className="mt-3 mr-4">
-          <DropdownButton as={ButtonGroup} title="Listar usuários" id="bg-vertical-dropdown-1">
-            <Dropdown.Item eventKey="1">Por denúncia aberta</Dropdown.Item>
-            <Dropdown.Item eventKey="2">Por denúncia fechada</Dropdown.Item>
-            <Dropdown.Item eventKey="3">Por alguma outra coisa</Dropdown.Item>
-          </DropdownButton>
-        </ButtonGroup>
 
         <Modal show={show} onHide={handleClose}>
           <CriarUsuario getUsuarios={getUsuarios} handleClose={handleClose} usuarios={usuarios}></CriarUsuario>
