@@ -181,7 +181,7 @@ const ListarUsuarios = () => {
                     <td>{usuario.email}</td>
                     <td>{usuario.endereco}</td>
                     <td>{usuario.perfil_id.$oid === "5fa1b6d84debe72ed41388ad" ? "Comum" : "Administrador"}</td>
-                    <td><Button size="sm">Visualizar</Button></td>
+                    <td><Button size="sm" onClick={() => history.push("/usuario/"+usuario.id.$oid)}>Vizualizar</Button></td>
                     {/* <td>{new Date(usuario.created_at).toUTCString()}</td> */}
                     <td><Button size="sm" onClick={() => handleShowEdit(usuario)}>Editar</Button></td>
                     {/* <td><Button size="sm" onClick={() => modalEditUser(usuario)}>Editar</Button></td> */}
