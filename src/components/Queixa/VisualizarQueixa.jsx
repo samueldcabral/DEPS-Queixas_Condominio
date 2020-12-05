@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Usuario from "../../models/Usuario";
 import Queixa from "../../models/Queixa";
 import Comentario from "../../models/Comentario";
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
 import { QueixaContext } from "../../store/queixa";
 // import {useHistory} from "react-router-dom";
 

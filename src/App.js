@@ -9,6 +9,7 @@ import ListarQueixas from "./components/ListarQueixas/ListarQueixas";
 import ListarUsuarios from "./components/ListarUsuarios/ListarUsuarios";
 import MyNavbar from "./components/MyNavbar/MyNavbar";
 import VisualizarQueixa from "./components/Queixa/VisualizarQueixa";
+import VisualizarUsuario from "./components/Usuario/VisualizarUsuario";
 import Teste from "./components/Teste/Teste";
 import DashboardAdmin from "./components/DashboardAdmin/DashboardAdmin";
 import DashboardUsuario from "./components/DashboardUsuario/DashboardUsuario";
@@ -29,6 +30,7 @@ function App() {
           <Route path="/listarQueixas" exact component={ListarQueixas}/>
           <Route path="/listarUsuarios" exact component={ListarUsuarios}/>
           <Route path="/queixa/:queixaId" exact component={VisualizarQueixa}/>
+          <Route path="/usuario/:usuarioId" exact component={VisualizarUsuario}/>
 
           <Route path="/teste" exact component={Teste}/>
         </Switch>
