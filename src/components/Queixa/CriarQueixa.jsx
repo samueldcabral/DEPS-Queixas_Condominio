@@ -30,6 +30,8 @@ const CriarQueixa = (props) => {
   const [usuarios_ids, setUsuarios_id] = useState([]);
 
   const [errorTitulo, setErrorTitulo] = useState("");
+  const [errorTipo, setErrorTipo] = useState("");
+  const [errorGravidade, setErrorGravidade] = useState("");
   const {user} = useContext(QueixaContext);
 
   const validaDados = (e) => {
@@ -39,9 +41,15 @@ const CriarQueixa = (props) => {
       if (tituloJaExiste){
         passou = false
         setErrorTitulo("Título já cadastrado!")
-      }
-      if (passou = true)
+      }else if (tipo == ""){
+        passou = false
+        setErrorTipo("Escolha um tipo!")
+      }else if (gravidade == ""){
+        passou = false
+        setErrorGravidade("Determine a gravidade!")
+      }else if (passou = true) {
         createQueixas(props)
+      }
     }
 
   const createQueixas = async ({handleClose, getQueixas}) => {
@@ -92,6 +100,18 @@ const CriarQueixa = (props) => {
                   <option value="Grave">Grave</option>
                   <option value="Gravissima">Gravíssima</option>
                 </Form.Control>
+                {errorGravidade && (
+                  <div style={{
+                    color: "rgb(168,104,109)",
+                    backgroun: "rgb(248,215,218)",
+                    boderRadius: "3px",
+                    padding: "2px 2px 2px 10px",
+                    fontSizr: "0.8rem",
+                    marginBottom: "0.5rem"
+                  }}>
+                    {errorGravidade}
+                  </div>
+                )}
               </Form.Group>
             <Form.Group controlId="exampleForm.SelectCustom">
                 <Form.Label>Tipo</Form.Label>
@@ -102,7 +122,19 @@ const CriarQueixa = (props) => {
                   <option value="Furto">Furto</option>
                   <option value="Pertubacao Publica">Pertubação Pública</option>
                 </Form.Control>
-              </Form.Group>
+                {errorTipo && (
+                  <div style={{
+                    color: "rgb(168,104,109)",
+                    backgroun: "rgb(248,215,218)",
+                    boderRadius: "3px",
+                    padding: "2px 2px 2px 10px",
+                    fontSizr: "0.8rem",
+                    marginBottom: "0.5rem"
+                  }}>
+                    {errorTipo}
+                  </div>
+                )}
+            </Form.Group>
             <Form.Group controlId="formBasicCheckbox">
               <Form.Check type="checkbox" label="É denúncia privada?" checked={privada} onChange={(e) => setPrivada(e.target.checked)}/>
             </Form.Group>
