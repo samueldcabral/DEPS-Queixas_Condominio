@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const mailApi = axios.create({
-  baseURL: `http://mail-redis-backend.herokuapp.com/`,
+  baseURL: `https://mail-redis-backend.herokuapp.com/`,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
