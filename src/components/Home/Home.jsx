@@ -139,7 +139,7 @@ const Home = () => {
         {loading && <Spinner animation="border" variant="warning"/>}
       </Form>
 
-      <button className="btn btn-primary" onClick={handleSendApiEmail}>Clickque me</button>
+      <button className="btn btn-info" onClick={handleSendApiEmail}>Clickque me</button>
       </div>
       
   );
