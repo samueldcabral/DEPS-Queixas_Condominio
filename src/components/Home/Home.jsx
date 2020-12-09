@@ -138,8 +138,6 @@ const Home = () => {
         
         {loading && <Spinner animation="border" variant="warning"/>}
       </Form>
-
-      <button className="btn btn-info" onClick={handleSendApiEmail}>Clickque me</button>
       </div>
       
   );
