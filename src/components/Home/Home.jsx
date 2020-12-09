@@ -12,6 +12,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
+import { sendEmail } from "../../services/mailApi";
 
 const Home = () => {
   const [email, setEmail] = useState();
@@ -88,6 +89,23 @@ const Home = () => {
     }
   }
 
+  const handleSendApiEmail = async () => {
+    const mailData = {
+      nome: "nuvem hoje",
+      email: "nuvem@nuvem.com",
+      queixa_id: "nuvem2435r2",
+      queixa_descricao: "A melhor nuvem do dai",
+      queixa_status: "Nuvens"
+    }
+    try {
+      await sendEmail(mailData.nome, mailData.email, mailData.queixa_id, mailData.queixa_descricao, mailData.queixa_status);
+      alert("Email enviado")
+    } catch (error) {
+      console.log(error);
+      alert("Email NAO enviado")
+    }
+  }
+
   return (
       <div style={{display: "flex", flex: "100%", width:"60%", margin: "auto", height: "90vh"}}>
 
@@ -120,6 +138,8 @@ const Home = () => {
         
         {loading && <Spinner animation="border" variant="warning"/>}
       </Form>
+
+      <button className="btn btn-primary" onClick={handleSendApiEmail}>Clickque me</button>
       </div>
       
   );
