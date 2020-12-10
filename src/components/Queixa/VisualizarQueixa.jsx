@@ -11,6 +11,7 @@ import Queixa from "../../models/Queixa";
 import Comentario from "../../models/Comentario";
 import { useParams } from "react-router-dom";
 import { QueixaContext } from "../../store/queixa";
+import { sendEmail } from "../../services/mailApi";
 // import {useHistory} from "react-router-dom";
 
 const VisualizarQueixa = () => {
@@ -80,13 +81,34 @@ const VisualizarQueixa = () => {
       <Card.Subtitle className="mb-2 text-muted">Criado por: {queixaUserName.nome}</Card.Subtitle>
     )
   }
+  function checkStatus(status_id) {
+    const status = {
+      "5fa1ba373ca57304b0fe6f8c": () => "Aberta",
+      "5fa1ba423ca57304b0fe6f8e": () => "Fechada",
+      "5fa1bae73ca57304b0fe6f90": () => 'Pendente para aprovação',
+      "5fbd58d23ca5732d6c6370ac": () => 'Pendente para exclusão',
+      "5fbd59043ca5732d6c6370ae": () => 'Em espera',
+    };
+    return status[status_id]();
+  }
+  const handleSendApiEmail = async (status_id_atualizado) => {
+    const queixaUser = usuarios.find((user) => user.id.$oid === queixa.criado_por);
+    try {
+      await sendEmail(queixaUser.nome, queixaUser.email, queixaId, queixa.descricao, checkStatus(status_id_atualizado.data.status_id.$oid));
+      alert('Um email foi enviado')
+    } catch (error) {
+      console.log(error);
+      alert("Email NAO enviado")
+    }
+  }
 
   const editarStatusQueixa = async () => {
-    if (status_id !== "") {
-      await editarApiStatusQueixa(status_id, queixa);
-      getQueixa();
-      alert('Status da queixa alterado')
-    }
+      if (status_id !== "") {
+        const status_id_atualizado = await editarApiStatusQueixa(status_id, queixa);
+        handleSendApiEmail(status_id_atualizado);
+        getQueixa();
+        alert('Status da queixa alterado');
+      }
   }
 
   useEffect(() => {

@@ -48,8 +48,6 @@ const VisualizarUsuario = () => {
 
   }, [usuarioId])
 
-console.log(loading)
-console.dir(queixas)
   useEffect(() => {
       getUsuario();
     return () => { };
