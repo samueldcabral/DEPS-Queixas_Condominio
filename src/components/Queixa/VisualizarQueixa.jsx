@@ -94,7 +94,7 @@ const VisualizarQueixa = () => {
   const handleSendApiEmail = async (status_id_atualizado) => {
     const queixaUser = usuarios.find((user) => user.id.$oid === queixa.criado_por);
     try {
-      await sendEmail(queixaUser.nome, queixaUser.email, queixaId, queixa.descricao, checkStatus(status_id_atualizado.data.status_id.$oid));
+      await sendEmail(queixaUser.nome, queixaUser.email, queixaId, queixa.descricao, checkStatus(status_id_atualizado.data.status_id.$oid), "Alteração do status da Queixa");
       alert('Um email foi enviado')
     } catch (error) {
       console.log(error);
