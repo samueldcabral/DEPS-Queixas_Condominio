@@ -9,13 +9,14 @@ const mailApi = axios.create({
   },
 });
 
-export async function sendEmail(nome, email, queixa_id, queixa_descricao, queixa_status) {
+export async function sendEmail(nome, email, queixa_id, queixa_descricao, queixa_status, subject) {
   return await mailApi.post("/mail", 
   {
     "nome": nome,
     "email": email,
     "queixa_id": queixa_id,
     "queixa_descricao":queixa_descricao,
-    "queixa_status":queixa_status
+    "queixa_status":queixa_status,
+    "subject":subject
   });
 }
