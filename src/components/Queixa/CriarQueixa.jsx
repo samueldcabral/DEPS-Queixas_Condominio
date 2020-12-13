@@ -112,7 +112,7 @@ const CriarQueixa = (props) => {
                     {errorGravidade}
                   </div>
                 )}
-              </Form.Group>
+            </Form.Group>
             <Form.Group controlId="exampleForm.SelectCustom">
                 <Form.Label>Tipo</Form.Label>
                 <Form.Control as="select" onChange={(e) => setTipo(e.target.value)}>
