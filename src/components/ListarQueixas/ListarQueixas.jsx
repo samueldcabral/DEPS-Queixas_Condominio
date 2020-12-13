@@ -4,7 +4,9 @@ import { QueixaContext } from "../../store/queixa";
 
 import { useHistory } from "react-router-dom";
 
-import { getApiQueixas, deleteApiQueixas, getApiUsuarios, createApiQueixas, getApiQueixasFindByPrivacidade, getApiQueixasFindByStatusId } from "../../services/api";
+import { getApiQueixas, deleteApiQueixas, getApiUsuarios, createApiQueixas,
+getApiQueixasFindByPrivacidade, getApiQueixasFindByStatusId, updateApiQueixas } from "../../services/api";
+
 import Queixa from "../../models/Queixa";
 import Usuario from "../../models/Usuario";
 
@@ -54,9 +56,27 @@ const ListarQueixas = () => {
   const [error, setError] = useState("");
   const [resultado_filtro, setResultadoFiltro] = useState("");
 
+
+  //Modal State
+  const [showEdit, setShowEdit] = useState(false);
+  const [modalTipo, setModalTipo] = useState();
+  const [modalGravidade, setModalGravidade] = useState();
+  const [modalPrivacidade, setModalPrivacidade] = useState();
+  const [modalId, setModalId] = useState();
+
+
   //Modal functions
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleShowEdit = (queixa) => {
+    console.log(queixa)
+    setShowEdit(true);
+    setModalTipo(queixa.tipo);
+    setModalGravidade(queixa.gravidade);
+    setModalId(queixa._id.$oid);
+    setModalPrivacidade(queixa.privacidade);
+  }
+  const handleCloseEdit = () => setShowEdit(false);
 
   // const [errorTitulo, setErrorTitulo] = useState("");
 
@@ -150,6 +170,19 @@ const ListarQueixas = () => {
     getQueixas();
   }
 
+  const handleModalEdit = () => {
+    let queixa = {
+      tipo: modalTipo,
+      gravidade: modalGravidade,
+      privacidade: modalPrivacidade,
+      "$oid": modalId
+    }
+
+    updateApiQueixas(queixa);
+    setShowEdit(false);
+    history.go(0)
+  }  
+
   useEffect(() => {
 
     getDadosApi();
@@ -240,7 +273,7 @@ const ListarQueixas = () => {
                       <td>{new Date(queixa.created_at).toUTCString()}</td>
                       <td>{userName.nome}</td>
                       <td><Button size="sm" onClick={() => history.push("/queixa/"+queixa._id.$oid)}>Vizualizar</Button></td>
-                      <td><Button size="sm">Editar</Button></td>
+                      <td><Button size="sm" onClick={() => handleShowEdit(queixa)}>Editar</Button></td>
                       <td><Button size="sm" onClick={() => deleteQueixas(queixa._id)}>Excluir</Button></td>
                     </tr>
                   )
@@ -252,6 +285,59 @@ const ListarQueixas = () => {
         }
         {loading && <h1>Carregando...</h1>}
       </div>
+
+      {/* ///////////////////////////////////////////////////////////////////////// */}
+      <>
+        <Modal show={showEdit} onHide={handleCloseEdit}>
+          <Modal.Header closeButton>
+            <Modal.Title>Atualize a queixa</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <Form>
+
+              <Form.Group>
+                <Form.Label>Tipo da queixa</Form.Label>
+                <Form.Group controlId="exampleForm.SelectCustom">
+                  <Form.Label>Tipo</Form.Label>
+                  <Form.Control as="select" value={modalTipo} onChange={(e) => setModalTipo(e.target.value)}>
+                    <option value="">Escolha o tipo</option>
+                    <option value="Homicidio">Homicídio</option>
+                    <option value="Roubo">Roubo</option>
+                    <option value="Furto">Furto</option>
+                    <option value="Pertubacao Publica">Pertubação Pública</option>
+                  </Form.Control>
+                </Form.Group>
+              </Form.Group>
+
+              <Form.Group controlId="exampleForm.SelectCustom">
+                <Form.Label>Gravidade</Form.Label>
+                <Form.Control as="select" value={modalGravidade} onChange={(e) => setModalGravidade(e.target.value)}>
+                  <option value="">Escolha a gravidade</option>
+                  <option value="Leve">Leve</option>
+                  <option value="Moderada">Moderada</option>
+                  <option value="Grave">Grave</option>
+                  <option value="Gravissima">Gravíssima</option>
+                </Form.Control>
+              </Form.Group>
+
+              <Form.Group controlId="formBasicCheckbox">
+                <Form.Check type="checkbox" label="É denúncia privada?" checked={modalPrivacidade} onChange={(e) => setModalPrivacidade(e.target.checked)}/>
+              </Form.Group>
+
+            </Form>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseEdit}>
+              Cancelar
+            </Button>
+            <Button variant="primary" onClick={handleModalEdit}>
+              Atualizar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
 
     </Container>
   );
