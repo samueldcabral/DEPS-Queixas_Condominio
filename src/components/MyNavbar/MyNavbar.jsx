@@ -43,12 +43,12 @@ const MyNavbar = () => {
       {localUser && localUser.perfil === "comum" ? 
       <>
         <Nav.Link onClick={() => history.push("/listarQueixas")}>Queixas</Nav.Link>
-        <Nav.Link onClick={() => history.push("/listarUsuarios")}>Usuários</Nav.Link>
+        {/* <Nav.Link onClick={() => history.push("/listarUsuarios")}>Usuários</Nav.Link> */}
       </>
       :
       <>
-        {/* <Nav.Link onClick={() => history.push("/Dashboard")}>QueixasT</Nav.Link>
-        <Nav.Link onClick={() => history.push("/DashboardUser")}>UsuáriosT</Nav.Link> */}
+        <Nav.Link onClick={() => history.push("/listarQueixas")}>Queixas</Nav.Link>
+        <Nav.Link onClick={() => history.push("/listarUsuarios")}>Usuários</Nav.Link>
       </>
       }
       

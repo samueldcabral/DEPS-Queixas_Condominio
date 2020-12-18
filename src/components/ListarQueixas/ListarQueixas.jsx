@@ -200,17 +200,23 @@ const ListarQueixas = () => {
         <Button variant="primary" onClick={handleShow} className="mt-3 mr-4">
           Registrar nova denúncia
         </Button>
-        <Form>
+
+        {user.perfil == 'admin' ?
+          <Form>
           <Form.Group controlId="exampleForm.SelectCustom">
             <Form.Label>Filtrar por Privacidade</Form.Label>
-              <Form.Control as="select" onChange={(e) => getQueixas(e.target.value)}>
-                <option value="">Escolha a opção</option>
-                <option value="privadas">Privadas</option>
-                <option value="publicas">Públicas</option>
+            <Form.Control as="select" onChange={(e) => getQueixas(e.target.value)}>
+              <option value="">Escolha a opção</option>
+              <option value="privadas">Privadas</option>
+              <option value="publicas">Públicas</option>
             </Form.Control>
           </Form.Group>
         </Form>
-        <Form>
+        : ''
+        }
+
+        {user.perfil == 'admin' ?
+          <Form>
           <Form.Group controlId="exampleForm.SelectCustom">
             <Form.Label>Filtrar por Status</Form.Label>
               <Form.Control as="select" onChange={(e) => getQueixas(e.target.value)}>
@@ -223,6 +229,9 @@ const ListarQueixas = () => {
             </Form.Control>
           </Form.Group>
         </Form>
+        : ''}
+
+
         </div>
 
         <Modal show={show} onHide={handleClose}>
